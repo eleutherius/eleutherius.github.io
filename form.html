@@ -15,7 +15,7 @@
         <div class="main-nav__wrapper">
           <ul class="main-nav__list site-list">
             <li class="site-list__item site-list__item--active">
-              <a href="form.html">Главная</a>
+              <a href="index.html">Главная</a>
             </li>
             <li class="site-list__item">
               <a href="photo.html">Наши работы</a>
@@ -39,14 +39,29 @@
       </nav>
     </header>
     <main>
-      <form>
-         <label for="nickname">Ваше имя:</label>
-         <input type="text" id="nickname" name="nickname">
-         <label for="user-email">Ваш e-mail:</label>
-         <input type="email" id="user-email" name="user-email">
-         <label for="content">Содержание:</label>
-         <textarea rows="10" cols="50" id="content" name="content"></textarea>
-         <input type="submit" value="Добавить">
+      <form accept-charset="UTF-8" action="url:https://echo.htmlacademy.ru" enctype="multipart/form-data">
+
+          <legend>ЗАПИСЬ НА СТРИЖКУ</legend>
+            <p><input type="text"  placeholder="Фамилия" id="name"></p>
+            <p><input type="text"  placeholder="Имя" id="secondname"></p>
+            <p><input type="text"  placeholder="Отчество" id="fathername"></p>
+            <p><input type="text"  placeholder="Контактный телефон" id="fathername"></p>
+            <p><input type="email" placeholder="Контактный e-mail" id="email"></p>
+            <p><textarea rows="5"  id="content"  placeholder="Доп. информация для мастера" name="content"></textarea></p>
+          <legend>ВЫБЕРИТЕ МОДЕЛЬ БОРОДЫ</legend>
+            <input type="radio" name="gender" value="admiral"><lable>адмирал</lable><br>
+            <input type="radio" name="gender" value="lesorub"><lable>лесоруб</lable><br>
+            <input type="radio" name="gender" value="plyarnik"> <lable>полярник</lable><br>
+            <input type="radio" name="gender" value="boyarin"> <lable>боярин</lable><br>
+            <input type="radio" name="gender" value="mudretsz"> <lable>мудрец</lable><br><br>
+          <legend>ДОПОЛНИТЕЛЬНЫЕ УСЛУГИ</legend>
+            <input type="checkbox" name="checkbox" value="mudretsz"> <lable>Покрасить бороду</lable><br>
+            <input type="checkbox" name="checkbox" value="mudretsz"> <lable>Накрутить усы</lable><br>
+            <input type="checkbox" name="checkbox" value="mudretsz"> <lable>Причесать бороду</lable><br>
+            <input type="checkbox" name="checkbox" value="mudretsz"> <lable>Подровнять виски</lable><br>
+            <input type="checkbox" name="checkbox" value="mudretsz"> <lable>Отполировать лысину</lable><br>
+            <input type="checkbox" name="checkbox" value="mudretsz"> <lable>Убрать седину</lable><br><br>
+         <input type="submit" value="ОТПРАВИТЬ ЗАЯВКУ">
       </form>
     </main>
     <footer class="page-footer">
