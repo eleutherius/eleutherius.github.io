@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>Барбершоп «Бородинский»</title>
+    <link rel="stylesheet" type="text/css" href="css/site.css">
   </head>
   <body>
 
@@ -42,12 +43,12 @@
       <form accept-charset="UTF-8" action="url:https://echo.htmlacademy.ru" enctype="multipart/form-data">
 
           <legend>ЗАПИСЬ НА СТРИЖКУ</legend>
-            <p><input type="text"  placeholder="Фамилия" id="name"></p>
-            <p><input type="text"  placeholder="Имя" id="secondname"></p>
-            <p><input type="text"  placeholder="Отчество" id="fathername"></p>
-            <p><input type="text"  placeholder="Контактный телефон" id="fathername"></p>
-            <p><input type="email" placeholder="Контактный e-mail" id="email"></p>
-            <p><textarea rows="5"  id="content"  placeholder="Доп. информация для мастера" name="content"></textarea></p>
+            <p><input type="text" name="name" placeholder="Фамилия" ></p>
+            <p><input type="text" name="secondname" placeholder="Имя" ></p>
+            <p><input type="text" name="fathername" placeholder="Отчество"></p>
+            <p><input type="text" name="phone" placeholder="Контактный телефон" ></p>
+            <p><input type="email" name="email" placeholder="Контактный e-mail" id="email"></p>
+            <p><textarea rows="5" name="content"  placeholder="Доп. информация для мастера" name="content"></textarea></p>
           <legend>ВЫБЕРИТЕ МОДЕЛЬ БОРОДЫ</legend>
             <input type="radio" name="gender" value="admiral"><lable>адмирал</lable><br>
             <input type="radio" name="gender" value="lesorub"><lable>лесоруб</lable><br>
