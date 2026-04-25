@@ -20,6 +20,14 @@ const {
 <!doctype html>
 <html lang="en" data-theme="lofi">
   <head>
+    <script is:inline>
+      (() => {
+        try {
+          const theme = localStorage.getItem("astrofy-theme") || "lofi";
+          document.documentElement.setAttribute("data-theme", theme);
+        } catch {}
+      })();
+    </script>
     <BaseHead title={title} description={description} image={image} , ogType={ogType} />
     {TRANSITION_API && <ViewTransitions />}
   </head>
@@ -29,7 +37,7 @@ const {
       <div class="drawer-content bg-base-100">
         <Header title={SITE_TITLE} />
         <div class="md:flex md:justify-center">
-          <main class="p-6 pt-10 lg:max-w-[900px] max-w-[100vw]">
+          <main class="p-6 pt-10 lg:pt-0 lg:max-w-[900px] max-w-[100vw]">
             <slot />
           </main>
         </div>
