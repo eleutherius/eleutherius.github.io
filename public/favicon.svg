@@ -1,13 +1,38 @@
-<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 36 36">
-  <path fill="#000" d="M22.25 4h-8.5a1 1 0 0 0-.96.73l-5.54 19.4a.5.5 0 0 0 .62.62l5.05-1.44a2 2 0 0 0 1.38-1.4l3.22-11.66a.5.5 0 0 1 .96 0l3.22 11.67a2 2 0 0 0 1.38 1.39l5.05 1.44a.5.5 0 0 0 .62-.62l-5.54-19.4a1 1 0 0 0-.96-.73Z"/>
-  <path fill="url(#gradient)" d="M18 28a7.63 7.63 0 0 1-5-2c-1.4 2.1-.35 4.35.6 5.55.14.17.41.07.47-.15.44-1.8 2.93-1.22 2.93.6 0 2.28.87 3.4 1.72 3.81.34.16.59-.2.49-.56-.31-1.05-.29-2.46 1.29-3.25 3-1.5 3.17-4.83 2.5-6-.67.67-2.6 2-5 2Z"/>
-  <defs>
-    <linearGradient id="gradient" x1="16" x2="16" y1="32" y2="24" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#000"/>
-      <stop offset="1" stop-color="#000" stop-opacity="0"/>
-    </linearGradient>
-  </defs>
-	<style>
-    @media (prefers-color-scheme:dark){:root{filter:invert(100%)}}
-  </style>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   version="1.1"
+   id="svg1"
+   width="50"
+   height="50"
+   viewBox="0 0 50 50"
+   sodipodi:docname="favicon.png"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1" />
+  <g
+     inkscape:groupmode="layer"
+     inkscape:label="Image"
+     id="g1">
+    <image
+       width="50"
+       height="50"
+       preserveAspectRatio="none"
+       xlink:href="data:image/png;base64,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&#10;"
+       id="image1" />
+  </g>
 </svg>
