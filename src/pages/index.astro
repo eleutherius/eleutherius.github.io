@@ -1,0 +1,233 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import HorizontalCard from "../components/HorizontalCard.astro";
+import { getPublishedPosts, postUrl } from "../lib/posts";
+import { readingTime } from "../lib/readingTime";
+import dayjs from "dayjs";
+import localizedFormat from "dayjs/plugin/localizedFormat";
+
+dayjs.extend(localizedFormat);
+const last_posts = (await getPublishedPosts()).slice(0, 2);
+
+// The spec plate beside the hero. Facts, not adjectives — and it gives the
+// right-hand column something to hold, which a single text column never does.
+const spec = [
+  { label: "Focus", value: "Kubernetes platforms · IaC · developer experience" },
+  { label: "Ways to work", value: "Full-time roles · consulting engagements" },
+  { label: "Based", value: "Ukraine · remote-first, CET hours" },
+  { label: "Reply time", value: "Within a day, or a plain no" },
+];
+
+// Recruiters scan for keywords and shouldn't have to open the CV to find them.
+const stack = [
+  { group: "Orchestration", items: ["Kubernetes", "Helm", "ArgoCD", "Docker"] },
+  { group: "Cloud & IaC", items: ["AWS", "Terraform", "Ansible", "Linux"] },
+  { group: "Delivery", items: ["GitHub Actions", "GitLab CI", "Bash", "Python"] },
+  { group: "Observability", items: ["Prometheus", "Grafana", "Loki", "OpenTelemetry"] },
+];
+---
+
+<BaseLayout sideBarActiveItemID="home">
+  <!-- ─────────── hero: two columns, so the field is actually used ─────────── -->
+  <section class="grid lg:grid-cols-[minmax(0,1.45fr)_minmax(0,1fr)] gap-8 lg:gap-10 items-start">
+    <div>
+      <div
+        class="flex items-center gap-3 flex-wrap"
+        style="font-family: var(--font-heading); font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent-700); margin-bottom: var(--space-6);"
+      >
+        <span style="width: 22px; height: 1px; background: var(--color-accent); display: block;"></span>
+        <span>Platform &amp; DevOps engineering</span>
+        <span style="width: 1px; height: 12px; background: var(--color-divider); display: block;"></span>
+        <span>Open to new work</span>
+      </div>
+
+      <h1 class="i-h1" style="margin-bottom: var(--space-6);">
+        I make infrastructure boring, so product teams can ship fast.
+      </h1>
+
+      <p style="margin: 0 0 var(--space-8); font-size: 18px; line-height: 1.62; max-width: 54ch; text-wrap: pretty;">
+        I'm Oleksandr — a platform engineer who builds the paved road: Kubernetes platforms, Terraform-managed cloud,
+        CI/CD developers don't fight, and observability that catches trouble before users do. I also ship small products
+        of my own.
+      </p>
+
+      <div class="flex flex-wrap gap-3">
+        <a href="mailto:hello@example.com" class="i-btn i-btn-primary">Hire me for platform work</a>
+        <a href="/cv" class="i-btn i-btn-secondary">Read the CV</a>
+      </div>
+    </div>
+
+    <!-- A drawn plate: hairline cells, label over value. The system's grid,
+         made visible rather than implied by whitespace. -->
+    <dl class="blueprint m-0" style="padding: 0;">
+      {
+        spec.map((row, i) => (
+          <div style={`padding: var(--space-4) var(--space-6); ${i > 0 ? "border-top: 1px solid var(--color-divider);" : ""}`}>
+            <dt class="i-kicker" style="font-size: 11.5px; margin-bottom: var(--space-2);">
+              {row.label}
+            </dt>
+            <dd style="margin: 0; font-size: 15px; line-height: 1.5;">{row.value}</dd>
+          </div>
+        ))
+      }
+      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+    </dl>
+  </section>
+
+  <!-- ─────────── selected work ─────────── -->
+  <section style="margin-top: calc(var(--space-8) * 2.2);">
+    <div
+      class="flex items-end justify-between gap-6"
+      style="border-bottom: 1px solid var(--color-divider); padding-bottom: var(--space-4); margin-bottom: var(--space-6);"
+    >
+      <div>
+        <div class="i-kicker" style="margin-bottom: var(--space-2);">01 — Selected work</div>
+        <h2 class="i-h2">Things I built and run</h2>
+      </div>
+      <a
+        href="/projects"
+        class="no-underline whitespace-nowrap"
+        style="font-family: var(--font-heading); font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase;"
+      >
+        All projects →
+      </a>
+    </div>
+
+    <!-- Flagship full width, the two repos side by side, the small one as a
+         slim row. Uneven cell sizes are what give a grid rhythm. -->
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="md:col-span-2">
+        <HorizontalCard
+          title="Wayfare"
+          img="/wayfare.png"
+          desc="A personal travel guide where every place and route is typed Markdown, rendered onto interactive Leaflet maps at build time. Content lives in git; the site stays static and fast."
+          url="https://eleutherius.github.io/wayfare"
+          badge="Live product"
+          tags={["Astro", "Leaflet", "Markdown content"]}
+        />
+      </div>
+      <HorizontalCard
+        title="btrepl"
+        desc="Incremental btrfs geo-replication over SSH, driven by a systemd timer — offsite snapshots without a backup vendor."
+        url="https://github.com/eleutherius/btrepl"
+        badge="Open source"
+        tags={["Bash", "systemd", "btrfs"]}
+      />
+      <HorizontalCard
+        title="Platform Engineer Laboratory"
+        desc="Runnable reference setups for the platform stack — the sandbox behind everything I write about."
+        url="https://github.com/eleutherius/pe-lab"
+        badge="Lab & notes"
+        tags={["Kubernetes", "Terraform", "CI/CD"]}
+      />
+      <a
+        href="https://eleutherius.github.io/seven-minute-workout"
+        class="i-card md:col-span-2 flex-row items-center justify-between gap-6 flex-wrap"
+        style="padding: var(--space-4) var(--space-6);"
+      >
+        <div class="flex items-baseline gap-5 flex-wrap">
+          <h2 class="i-h4">7 minutes</h2>
+          <p style="margin: 0; font-size: 15px; color: var(--color-neutral-700);">
+            Offline-first PWA for morning home workouts.
+          </p>
+        </div>
+        <div class="flex items-center gap-5">
+          <span class="i-tag i-tag-outline">PWA</span>
+          <span class="i-open">Open →</span>
+        </div>
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      </a>
+    </div>
+  </section>
+
+  <!-- ─────────── stack: four equal cells, the grid at its most literal ─────────── -->
+  <section style="margin-top: calc(var(--space-8) * 2.2);">
+    <div style="border-bottom: 1px solid var(--color-divider); padding-bottom: var(--space-4); margin-bottom: var(--space-6);">
+      <div class="i-kicker" style="margin-bottom: var(--space-2);">02 — Stack</div>
+      <h2 class="i-h2">What I work in daily</h2>
+    </div>
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
+      {
+        stack.map((col) => (
+          <div>
+            <div
+              style="font-family: var(--font-heading); font-weight: 600; font-size: 15px; letter-spacing: 0.04em; text-transform: uppercase; padding-bottom: var(--space-3); margin-bottom: var(--space-3); border-bottom: 1px solid var(--color-divider);"
+            >
+              {col.group}
+            </div>
+            <ul class="flex flex-col gap-2 list-none p-0 m-0" style="font-size: 14.5px; color: var(--color-neutral-800);">
+              {col.items.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- ─────────── writing ─────────── -->
+  {
+    last_posts.length > 0 && (
+      <section style="margin-top: calc(var(--space-8) * 2.2);">
+        <div
+          class="flex items-end justify-between gap-6"
+          style="border-bottom: 1px solid var(--color-divider); padding-bottom: var(--space-4); margin-bottom: var(--space-6);"
+        >
+          <div>
+            <div class="i-kicker" style="margin-bottom: var(--space-2)">
+              03 — Writing
+            </div>
+            <h2 class="i-h2">Latest from the blog</h2>
+          </div>
+          <a
+            href="/blog/"
+            class="no-underline whitespace-nowrap"
+            style="font-family: var(--font-heading); font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase;"
+          >
+            All posts →
+          </a>
+        </div>
+
+        <div class="flex flex-col gap-6">
+          {last_posts.map((post) => (
+            <HorizontalCard
+              title={post.data.title}
+              img={post.data.heroImage}
+              desc={post.data.description}
+              url={postUrl(post)}
+              target="_self"
+              tags={post.data.tags}
+              date={dayjs(post.data.pubDate).format("ll")}
+              readingTime={readingTime(post.body)}
+            />
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  <!-- ─────────── contact ─────────── -->
+  <section
+    class="blueprint flex flex-wrap items-center justify-between gap-6"
+    style="margin-top: calc(var(--space-8) * 2.2); padding: calc(var(--space-8) * 1.2) calc(var(--space-8) * 1.2); background: var(--color-accent-900); color: var(--color-bg);"
+  >
+    <div style="max-width: 46ch;">
+      <h2 class="i-h2" style="color: var(--color-bg); margin-bottom: var(--space-3);">
+        Hiring for platform, SRE or DevOps?
+      </h2>
+      <p style="margin: 0; font-size: 16px; line-height: 1.6; color: var(--color-accent-200); text-wrap: pretty;">
+        Tell me what breaks today and what you want shipped next quarter. I reply within a day, and I'll say plainly if
+        I'm not the right fit.
+      </p>
+    </div>
+    <a
+      href="mailto:hello@example.com"
+      class="i-btn"
+      style="background: var(--color-bg); border-color: var(--color-bg); color: var(--color-accent-900); padding: var(--space-4) var(--space-8);"
+    >
+      Get in touch
+    </a>
+    <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+  </section>
+</BaseLayout>

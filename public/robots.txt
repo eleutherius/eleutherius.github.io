@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://eleutherius.github.io/sitemap-index.xml

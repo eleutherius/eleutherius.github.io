@@ -1,0 +1,33 @@
+---
+import SideBarFooter from "./SideBarFooter.astro";
+import { Image } from "astro:assets";
+import SideBarMenu from "./SideBarMenu.astro";
+const { sideBarActiveItemID } = Astro.props;
+---
+
+<div class="drawer-side z-40">
+  <label for="my-drawer" class="drawer-overlay"></label>
+  <aside
+    class="px-4 pt-6 pb-6 h-auto min-h-full w-[19rem] flex flex-col gap-6"
+    style="background: var(--color-bg); border-right: 1px solid var(--color-divider); color: var(--color-text);"
+  >
+    <a href="/" class="no-underline">
+      <!-- Square, hairline-framed, its own colours. -->
+      <figure class="blueprint i-portrait mb-4" style="aspect-ratio: 1;">
+        <Image format="webp" width={600} height={600} src="/profile.webp" alt="Oleksandr Liakhov" />
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      </figure>
+      <div
+        style="font-family: var(--font-heading); font-weight: 600; font-size: 21px; letter-spacing: 0.01em; text-transform: uppercase; line-height: 1.12; color: var(--color-text);"
+      >
+        Oleksandr<br />Liakhov
+      </div>
+      <div class="mt-1" style="font-size: 13.5px; line-height: 1.5; color: var(--color-neutral-700);">
+        Platform &amp; DevOps engineer
+      </div>
+    </a>
+
+    <SideBarMenu sideBarActiveItemID={sideBarActiveItemID} />
+    <SideBarFooter />
+  </aside>
+</div>

@@ -1,0 +1,50 @@
+---
+// A blueprint object: square, hairline-bordered, transparent, registration
+// marks at the corners. The old version was a rounded DaisyUI card that grew
+// 2% on hover — Industry line drawings don't scale, the border takes the accent.
+//
+// `date` and `readingTime` are optional, so /projects can keep calling this
+// component with the same props it always did.
+const { title, img, desc, url, badge, tags, date, readingTime, target = "_blank" } = Astro.props;
+import { Image } from "astro:assets";
+// Tags render as plain spans, not links: the whole card is already an anchor,
+// and an <a> inside an <a> is invalid HTML (the old version did exactly that).
+// Tag links live on the blog index filter row and in PostLayout instead.
+---
+
+<a href={url} target={target} class="i-card i-media-card" data-has-media={img ? "true" : undefined}>
+  {
+    img && (
+      <div class="i-media">
+        <Image src={img} width={640} height={480} format="webp" alt={title} />
+      </div>
+    )
+  }
+  <div class="flex flex-col gap-2 min-w-0">
+    {
+      (date || readingTime) && (
+        <div class="i-meta">
+          {date && <time>{date}</time>}
+          {readingTime && <span>{readingTime} min read</span>}
+        </div>
+      )
+    }
+    <h2 class="i-h3">
+      {title}
+      {badge && <span class="i-tag i-tag-accent ml-2 align-middle">{badge}</span>}
+    </h2>
+    <p style="margin: 0; font-size: 15.5px; line-height: 1.6; color: var(--color-neutral-800); text-wrap: pretty;">
+      {desc}
+    </p>
+    {
+      tags && tags.length > 0 && (
+        <div class="flex flex-wrap gap-2 mt-1">
+          {tags.map((tag) => (
+            <span class="i-tag i-tag-outline">{tag}</span>
+          ))}
+        </div>
+      )
+    }
+  </div>
+  <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+</a>

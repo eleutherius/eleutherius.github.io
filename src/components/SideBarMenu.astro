@@ -1,0 +1,26 @@
+---
+const { sideBarActiveItemID } = Astro.props;
+
+// Active state is a server-rendered aria-current attribute, styled in
+// industry.css. The old version added a class from a client script after paint,
+// which flashed the wrong item on every navigation.
+const items = [
+  { id: "home", href: "/", label: "Home" },
+  { id: "projects", href: "/projects", label: "Projects" },
+  { id: "blog", href: "/blog/", label: "Blog" },
+  { id: "cv", href: "/cv", label: "CV" },
+];
+---
+
+<nav
+  class="i-side-nav flex flex-col"
+  style="border-top: 1px solid var(--color-divider);"
+>
+  {
+    items.map((item) => (
+      <a href={item.href} aria-current={sideBarActiveItemID === item.id ? "page" : undefined}>
+        {item.label}
+      </a>
+    ))
+  }
+</nav>

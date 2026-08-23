@@ -1,0 +1,46 @@
+---
+// The page you open on your phone and hold up to someone. Deliberately not in
+// the sidebar navigation — it's a tool for you, not a destination for readers.
+// No sidebar, no footer: one object, centred, readable across a table.
+import BaseHead from "../components/BaseHead.astro";
+import QrCode from "../components/QrCode.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../config";
+
+const site = Astro.site?.href ?? "https://eleutherius.github.io/";
+const shown = site.replace(/^https?:\/\//, "").replace(/\/$/, "");
+---
+
+<!doctype html>
+<html lang="en" data-theme="industry">
+  <head>
+    <BaseHead title={`${SITE_TITLE} — share`} description={SITE_DESCRIPTION} />
+    <meta name="robots" content="noindex" />
+  </head>
+  <body>
+    <main
+      class="min-h-screen flex flex-col items-center justify-center gap-8 p-6"
+      style="background: var(--color-bg);"
+    >
+      <div class="blueprint" style="padding: var(--space-8); background: var(--color-bg);">
+        <QrCode value={site} size={260} />
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      </div>
+
+      <div class="text-center">
+        <div
+          style="font-family: var(--font-heading); font-weight: 600; font-size: 26px; letter-spacing: 0.02em; text-transform: uppercase; line-height: 1.1;"
+        >
+          Oleksandr Liakhov
+        </div>
+        <div style="font-size: 15px; color: var(--color-neutral-700); margin-top: var(--space-2);">
+          Platform &amp; DevOps engineer
+        </div>
+        <div
+          style="font-family: var(--font-heading); font-size: 15px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-accent-700); margin-top: var(--space-4);"
+        >
+          {shown}
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

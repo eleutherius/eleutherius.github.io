@@ -1,0 +1,162 @@
+---
+import { type BlogSchema } from "../content.config";
+import BaseLayout from "./BaseLayout.astro";
+import dayjs from "dayjs";
+import localizedFormat from "dayjs/plugin/localizedFormat";
+import { Image } from "astro:assets";
+
+export interface Props extends BlogSchema {
+  headings?: { depth: number; slug: string; text: string }[];
+  minutes?: number;
+  prev?: { title: string; url: string } | null;
+  next?: { title: string; url: string } | null;
+}
+
+const {
+  title,
+  description,
+  pubDate,
+  updatedDate,
+  heroImage,
+  badge,
+  draft,
+  tags = [],
+  headings = [],
+  minutes,
+  prev = null,
+  next = null,
+} = Astro.props;
+
+dayjs.extend(localizedFormat);
+const displayDate = dayjs(pubDate).format("ll");
+const displayUpdatedDate = updatedDate ? dayjs(updatedDate).format("ll") : null;
+
+// Only h2s — a table of contents that mirrors every h3 stops being a map.
+const toc = headings.filter((h) => h.depth === 2);
+---
+
+<BaseLayout title={title} description={description} image={heroImage} ogType="article">
+  <div class="lg:flex lg:gap-10 lg:items-start">
+    {
+      toc.length > 2 && (
+        <nav
+          class="hidden lg:block sticky top-12 shrink-0 w-[210px]"
+          aria-label="On this page"
+          style="border-top: 1px solid var(--color-divider); padding-top: var(--space-4);"
+        >
+          <div class="i-kicker" style="margin-bottom: var(--space-4);">On this page</div>
+          <div class="flex flex-col gap-3">
+            {toc.map((h) => (
+              <a
+                href={`#${h.slug}`}
+                class="no-underline"
+                style="font-size: 14px; line-height: 1.4; color: var(--color-neutral-800); border-left: 2px solid var(--color-divider); padding-left: var(--space-3);"
+              >
+                {h.text}
+              </a>
+            ))}
+          </div>
+        </nav>
+      )
+    }
+
+    <article class="min-w-0 grow">
+      <header style="margin-bottom: var(--space-8);">
+        <div class="i-meta" style="margin-bottom: var(--space-4);">
+          <time datetime={pubDate?.toISOString()}>{displayDate}</time>
+          {minutes && <span>{minutes} min read</span>}
+          {displayUpdatedDate && <span>Updated {displayUpdatedDate}</span>}
+        </div>
+        <h1 class="i-h1" style="margin-bottom: var(--space-4);">{title}</h1>
+        <p
+          style="margin: 0 0 var(--space-6); font-size: 19px; line-height: 1.55; color: var(--color-neutral-800); max-width: 62ch; text-wrap: pretty;"
+        >
+          {description}
+        </p>
+        <div class="flex flex-wrap gap-2 items-center">
+          {draft && <span class="i-tag i-tag-neutral">Draft — not published</span>}
+          {badge && <span class="i-tag i-tag-accent">{badge}</span>}
+          {tags.map((tag) => (
+            <a href={`/blog/tag/${tag}`} class="i-tag i-tag-outline">
+              {tag}
+            </a>
+          ))}
+        </div>
+      </header>
+
+      {
+        heroImage && (
+          <figure class="blueprint i-media" style="margin-bottom: var(--space-8);">
+            <Image width={1200} height={675} format="webp" src={heroImage} alt={title} />
+            <i class="corner tl" />
+            <i class="corner tr" />
+            <i class="corner bl" />
+            <i class="corner br" />
+          </figure>
+        )
+      }
+
+      <div class="prose prose-lg">
+        <slot />
+      </div>
+
+      {
+        (prev || next) && (
+          <div style="border-top: 1px solid var(--color-divider); margin-top: calc(var(--space-8) * 1.4); padding-top: var(--space-6);">
+            <div class="i-kicker" style="margin-bottom: var(--space-4);">Keep reading</div>
+            <div class="grid md:grid-cols-2 gap-4">
+              {prev && (
+                <a href={prev.url} class="i-card" style="padding: var(--space-4);">
+                  <div class="i-kicker" style="font-size: 12px;">
+                    ← Previous
+                  </div>
+                  <div style="font-family: var(--font-heading); font-weight: 600; font-size: 18px; line-height: 1.2;">
+                    {prev.title}
+                  </div>
+                  <i class="corner tl" />
+                  <i class="corner tr" />
+                  <i class="corner bl" />
+                  <i class="corner br" />
+                </a>
+              )}
+              {next && (
+                <a href={next.url} class="i-card md:text-right md:col-start-2" style="padding: var(--space-4);">
+                  <div class="i-kicker" style="font-size: 12px;">
+                    Next →
+                  </div>
+                  <div style="font-family: var(--font-heading); font-weight: 600; font-size: 18px; line-height: 1.2;">
+                    {next.title}
+                  </div>
+                  <i class="corner tl" />
+                  <i class="corner tr" />
+                  <i class="corner bl" />
+                  <i class="corner br" />
+                </a>
+              )}
+            </div>
+          </div>
+        )
+      }
+
+      <div
+        class="blueprint flex flex-wrap items-center justify-between gap-5"
+        style="margin-top: var(--space-8); padding: var(--space-6); background: var(--color-accent-900); color: var(--color-bg);"
+      >
+        <div>
+          <div class="i-h4" style="color: var(--color-bg); margin-bottom: var(--space-2);">New posts, no newsletter</div>
+          <p style="margin: 0; font-size: 15px; line-height: 1.5; color: var(--color-accent-200);">
+            Plain RSS. Nothing to unsubscribe from.
+          </p>
+        </div>
+        <a
+          href="/rss.xml"
+          class="i-btn"
+          style="background: var(--color-bg); border-color: var(--color-bg); color: var(--color-accent-900);"
+        >
+          Subscribe
+        </a>
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      </div>
+    </article>
+  </div>
+</BaseLayout>

@@ -1,0 +1,53 @@
+---
+import { CollectionEntry } from "astro:content";
+import { render } from "astro:content";
+import { BlogSchema } from "../../content.config";
+import PostLayout from "../../layouts/PostLayout.astro";
+import { getPublishedPosts, postSlug, postUrl } from "../../lib/posts";
+import { readingTime } from "../../lib/readingTime";
+
+export async function getStaticPaths() {
+  const posts = await getPublishedPosts(); // newest first
+
+  return posts.map((entry, i) => {
+    // Newest-first order, so the *next* item in the array is the older post.
+    const older = posts[i + 1];
+    const newer = posts[i - 1];
+    return {
+      params: { slug: postSlug(entry) },
+      props: {
+        entry,
+        prev: newer ? { title: newer.data.title, url: postUrl(newer) } : null,
+        next: older ? { title: older.data.title, url: postUrl(older) } : null,
+      },
+    };
+  });
+}
+
+interface Props {
+  entry: CollectionEntry<"blog">;
+  prev: { title: string; url: string } | null;
+  next: { title: string; url: string } | null;
+}
+
+const { entry, prev, next } = Astro.props;
+const post: BlogSchema = entry.data;
+const { Content, headings } = await render(entry);
+---
+
+<PostLayout
+  title={post.title}
+  description={post.description}
+  pubDate={post.pubDate}
+  heroImage={post.heroImage}
+  updatedDate={post.updatedDate}
+  badge={post.badge}
+  tags={post.tags}
+  draft={post.draft}
+  headings={headings}
+  minutes={readingTime(entry.body)}
+  prev={prev}
+  next={next}
+>
+  <Content />
+</PostLayout>

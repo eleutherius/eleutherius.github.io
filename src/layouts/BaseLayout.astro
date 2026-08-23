@@ -1,0 +1,45 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import SideBar from "../components/SideBar.astro";
+import { ClientRouter } from "astro:transitions";
+
+import { SITE_TITLE, SITE_DESCRIPTION, TRANSITION_API } from "../config";
+
+const {
+  image,
+  title = SITE_TITLE,
+  description = SITE_DESCRIPTION,
+  includeSidebar = true,
+  sideBarActiveItemID,
+  ogType,
+} = Astro.props;
+---
+
+<!doctype html>
+<!-- One theme. The old localStorage theme script and the ThemeSelector are gone:
+     four switchable themes read as a template demo, not as a brand. -->
+<html lang="en" data-theme="industry">
+  <head>
+    <BaseHead title={title} description={description} image={image} ogType={ogType} />
+    {TRANSITION_API && <ClientRouter />}
+  </head>
+  <body>
+    <div class="drawer lg:drawer-open" style="background: var(--color-bg);">
+      <input id="my-drawer" type="checkbox" class="drawer-toggle" />
+      <!-- min-h-screen + flex-col + a growing main is what pins the footer to the
+           bottom of the viewport on short pages. -->
+      <div class="drawer-content flex flex-col min-h-screen" style="background: var(--color-bg);">
+        <Header title={SITE_TITLE} />
+        <div class="md:flex md:justify-center grow">
+          <main class="p-6 pt-10 lg:pt-12 lg:px-10 lg:max-w-[1140px] max-w-[100vw] w-full">
+            <slot />
+          </main>
+        </div>
+        <Footer />
+      </div>
+      {includeSidebar && <SideBar sideBarActiveItemID={sideBarActiveItemID} />}
+    </div>
+  </body>
+</html>

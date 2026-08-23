@@ -1,0 +1,32 @@
+---
+// Build-time QR code. Renders an inline SVG, so there's no runtime JS, no
+// network request and no image file to keep in sync with the URL.
+//
+// Requires one dependency:
+//     pnpm add qrcode
+//
+// `qrcode` is a build-only import here — it never reaches the browser.
+import QRCode from "qrcode";
+
+export interface Props {
+  /** What the code points at. Absolute URL. */
+  value: string;
+  /** Rendered edge length in px. Below ~120px phone cameras start to struggle. */
+  size?: number;
+  /** Quiet zone in modules. 2 is the practical minimum, 4 is the spec. */
+  margin?: number;
+}
+
+const { value, size = 160, margin = 2 } = Astro.props;
+
+// Steel on paper, matching the system. `errorCorrectionLevel: "M"` survives a
+// bit of print smudging without inflating the module count.
+const svg = await QRCode.toString(value, {
+  type: "svg",
+  errorCorrectionLevel: "M",
+  margin,
+  color: { dark: "#1d2d3dff", light: "#00000000" },
+});
+---
+
+<div style={`width: ${size}px; height: ${size}px; flex: none;`} set:html={svg} aria-label={`QR code for ${value}`}></div>
