@@ -2,11 +2,40 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
-<BaseLayout title = "404: Not Found" includeSidebar={false}>
-  <div class="text-center">
-    <h1 class="text-9xl font-bold mb-4">🏝</h1>
-    <h1 class="text-9xl font-bold mb-2">404</h1>
-    <h3 class="text-2xl">The page you're looking for couldn't be found.</h3>
-    <a class="btn btn-accent mt-9" href="/">Home</a>
-  </div>
+<BaseLayout title="Page not found">
+  <section class="nf">
+    <p class="nf-code" aria-hidden="true">404</p>
+    <h1 class="i-h1">This page doesn't exist</h1>
+    <p class="i-lede">
+      The address may be mistyped, or the page moved when the site was rebuilt. Everything that's still here is one
+      click away.
+    </p>
+    <div class="flex flex-wrap gap-3">
+      <a href="/" class="i-btn i-btn-primary">Home</a>
+      <a href="/projects" class="i-btn i-btn-secondary">Projects</a>
+      <a href="/blog/" class="i-btn i-btn-secondary">Blog</a>
+      <a href="/cv" class="i-btn i-btn-secondary">CV</a>
+    </div>
+  </section>
 </BaseLayout>
+
+<style>
+  .nf {
+    display: grid;
+    gap: var(--space-6);
+    justify-items: start;
+    padding-top: var(--space-8);
+  }
+  /* The number is drawn, not shouted: an outline in the hairline colour, the
+     size of the display headline. */
+  .nf-code {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: clamp(4.5rem, 3rem + 6vw, 6rem);
+    line-height: 0.85;
+    letter-spacing: -0.02em;
+    color: transparent;
+    -webkit-text-stroke: 1px color-mix(in srgb, var(--color-text) 55%, transparent);
+  }
+</style>

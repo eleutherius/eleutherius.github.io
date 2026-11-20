@@ -3,7 +3,7 @@ import { type BlogSchema } from "../content.config";
 import BaseLayout from "./BaseLayout.astro";
 import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
-import { Image } from "astro:assets";
+import { Image, getImage } from "astro:assets";
 
 export interface Props extends BlogSchema {
   headings?: { depth: number; slug: string; text: string }[];
@@ -31,29 +31,22 @@ dayjs.extend(localizedFormat);
 const displayDate = dayjs(pubDate).format("ll");
 const displayUpdatedDate = updatedDate ? dayjs(updatedDate).format("ll") : null;
 
+// Share image: the post's hero as a JPEG — LinkedIn and others don't show WebP.
+const ogImage = heroImage ? await getImage({ src: heroImage, format: "jpg", width: 1200 }) : null;
+
 // Only h2s — a table of contents that mirrors every h3 stops being a map.
 const toc = headings.filter((h) => h.depth === 2);
 ---
 
-<BaseLayout title={title} description={description} image={heroImage} ogType="article">
-  <div class="lg:flex lg:gap-10 lg:items-start">
+<BaseLayout title={title} description={description} image={ogImage?.src} ogType="article" sideBarActiveItemID="blog">
+  <div class="post">
     {
       toc.length > 2 && (
-        <nav
-          class="hidden lg:block sticky top-12 shrink-0 w-[210px]"
-          aria-label="On this page"
-          style="border-top: 1px solid var(--color-divider); padding-top: var(--space-4);"
-        >
-          <div class="i-kicker" style="margin-bottom: var(--space-4);">On this page</div>
-          <div class="flex flex-col gap-3">
+        <nav class="toc" aria-label="On this page">
+          <p class="i-label">On this page</p>
+          <div class="toc-links">
             {toc.map((h) => (
-              <a
-                href={`#${h.slug}`}
-                class="no-underline"
-                style="font-size: 14px; line-height: 1.4; color: var(--color-neutral-800); border-left: 2px solid var(--color-divider); padding-left: var(--space-3);"
-              >
-                {h.text}
-              </a>
+              <a href={`#${h.slug}`}>{h.text}</a>
             ))}
           </div>
         </nav>
@@ -61,18 +54,14 @@ const toc = headings.filter((h) => h.depth === 2);
     }
 
     <article class="min-w-0 grow">
-      <header style="margin-bottom: var(--space-8);">
-        <div class="i-meta" style="margin-bottom: var(--space-4);">
+      <header class="post-head">
+        <div class="i-meta">
           <time datetime={pubDate?.toISOString()}>{displayDate}</time>
           {minutes && <span>{minutes} min read</span>}
           {displayUpdatedDate && <span>Updated {displayUpdatedDate}</span>}
         </div>
-        <h1 class="i-h1" style="margin-bottom: var(--space-4);">{title}</h1>
-        <p
-          style="margin: 0 0 var(--space-6); font-size: 19px; line-height: 1.55; color: var(--color-neutral-800); max-width: 62ch; text-wrap: pretty;"
-        >
-          {description}
-        </p>
+        <h1 class="i-h1">{title}</h1>
+        <p class="i-lede" style="max-width: 62ch; color: var(--color-neutral-800);">{description}</p>
         <div class="flex flex-wrap gap-2 items-center">
           {draft && <span class="i-tag i-tag-neutral">Draft — not published</span>}
           {badge && <span class="i-tag i-tag-accent">{badge}</span>}
@@ -86,8 +75,8 @@ const toc = headings.filter((h) => h.depth === 2);
 
       {
         heroImage && (
-          <figure class="blueprint i-media" style="margin-bottom: var(--space-8);">
-            <Image width={1200} height={675} format="webp" src={heroImage} alt={title} />
+          <figure class="blueprint i-media post-hero">
+            <Image src={heroImage} widths={[720, 1080, 1440]} sizes="(min-width: 1024px) 50rem, 100vw" format="webp" alt="" loading="eager" />
             <i class="corner tl" />
             <i class="corner tr" />
             <i class="corner bl" />
@@ -102,17 +91,13 @@ const toc = headings.filter((h) => h.depth === 2);
 
       {
         (prev || next) && (
-          <div style="border-top: 1px solid var(--color-divider); margin-top: calc(var(--space-8) * 1.4); padding-top: var(--space-6);">
-            <div class="i-kicker" style="margin-bottom: var(--space-4);">Keep reading</div>
+          <nav class="more" aria-label="More posts">
+            <h2 class="i-h4">Keep reading</h2>
             <div class="grid md:grid-cols-2 gap-4">
               {prev && (
-                <a href={prev.url} class="i-card" style="padding: var(--space-4);">
-                  <div class="i-kicker" style="font-size: 12px;">
-                    ← Previous
-                  </div>
-                  <div style="font-family: var(--font-heading); font-weight: 600; font-size: 18px; line-height: 1.2;">
-                    {prev.title}
-                  </div>
+                <a href={prev.url} class="i-card more-card">
+                  <span class="i-label">Newer post</span>
+                  <span class="more-title">{prev.title}</span>
                   <i class="corner tl" />
                   <i class="corner tr" />
                   <i class="corner bl" />
@@ -120,13 +105,9 @@ const toc = headings.filter((h) => h.depth === 2);
                 </a>
               )}
               {next && (
-                <a href={next.url} class="i-card md:text-right md:col-start-2" style="padding: var(--space-4);">
-                  <div class="i-kicker" style="font-size: 12px;">
-                    Next →
-                  </div>
-                  <div style="font-family: var(--font-heading); font-weight: 600; font-size: 18px; line-height: 1.2;">
-                    {next.title}
-                  </div>
+                <a href={next.url} class="i-card more-card md:text-right md:col-start-2">
+                  <span class="i-label">Older post</span>
+                  <span class="more-title">{next.title}</span>
                   <i class="corner tl" />
                   <i class="corner tr" />
                   <i class="corner bl" />
@@ -134,29 +115,115 @@ const toc = headings.filter((h) => h.depth === 2);
                 </a>
               )}
             </div>
-          </div>
+          </nav>
         )
       }
 
-      <div
-        class="blueprint flex flex-wrap items-center justify-between gap-5"
-        style="margin-top: var(--space-8); padding: var(--space-6); background: var(--color-accent-900); color: var(--color-bg);"
-      >
+      <div class="blueprint subscribe">
         <div>
-          <div class="i-h4" style="color: var(--color-bg); margin-bottom: var(--space-2);">New posts, no newsletter</div>
-          <p style="margin: 0; font-size: 15px; line-height: 1.5; color: var(--color-accent-200);">
-            Plain RSS. Nothing to unsubscribe from.
-          </p>
+          <h2 class="i-h4" style="color: var(--color-bg);">New posts, no newsletter</h2>
+          <p>Plain RSS. Nothing to unsubscribe from.</p>
         </div>
-        <a
-          href="/rss.xml"
-          class="i-btn"
-          style="background: var(--color-bg); border-color: var(--color-bg); color: var(--color-accent-900);"
-        >
-          Subscribe
-        </a>
+        <a href="/rss.xml" class="i-btn subscribe-btn">Subscribe</a>
         <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
       </div>
     </article>
   </div>
 </BaseLayout>
+
+<style>
+  @media (min-width: 1024px) {
+    .post {
+      display: flex;
+      gap: var(--space-12);
+      align-items: flex-start;
+    }
+  }
+  .toc {
+    display: none;
+  }
+  @media (min-width: 1280px) {
+    .toc {
+      display: block;
+      position: sticky;
+      top: var(--space-12);
+      flex: none;
+      width: 13rem;
+      padding-top: var(--space-4);
+      border-top: 1px solid var(--color-divider);
+    }
+  }
+  .toc-links {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin-top: var(--space-4);
+  }
+  .toc-links a {
+    padding-left: var(--space-3);
+    border-left: 2px solid var(--color-divider);
+    font-size: var(--text-label);
+    line-height: 1.4;
+    color: var(--color-neutral-800);
+    text-decoration: none;
+  }
+  .toc-links a:hover {
+    border-left-color: var(--color-accent);
+    color: var(--color-accent-800);
+  }
+
+  .post-head {
+    display: grid;
+    gap: var(--space-4);
+    margin-bottom: var(--space-8);
+  }
+  .post-hero {
+    margin: 0 0 var(--space-8);
+  }
+
+  .more {
+    margin-top: var(--space-12);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-divider);
+    display: grid;
+    gap: var(--space-4);
+  }
+  .more-card {
+    padding: var(--space-4);
+    gap: var(--space-1);
+  }
+  .more-title {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 1.125rem;
+    line-height: 1.2;
+  }
+
+  .subscribe {
+    margin-top: var(--space-8);
+    padding: var(--space-6);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    background: var(--color-accent-900);
+    color: var(--color-bg);
+  }
+  .subscribe p {
+    margin: var(--space-1) 0 0;
+    font-size: var(--text-small);
+    line-height: 1.6;
+    color: var(--color-accent-200);
+  }
+  .subscribe-btn {
+    background: var(--color-bg);
+    border-color: var(--color-bg);
+    color: var(--color-accent-900);
+  }
+  .subscribe-btn:hover {
+    background: var(--color-accent-100);
+    border-color: var(--color-accent-100);
+    color: var(--color-accent-900);
+  }
+</style>

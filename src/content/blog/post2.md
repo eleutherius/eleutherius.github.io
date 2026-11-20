@@ -3,7 +3,7 @@ title: "Let's Build Our Own Mesh VPN"
 description: "Most explanations of mesh VPNs start with a product and work backwards. You read about magic DNS, ACL tags, exit nodes, subnet routers, and somewhere in the middle you lose the thread of *why any of this exists*."
 draft: true
 pubDate: "Aug 23 2026"
-heroImage: "/mesh_vpn.png"
+heroImage: "../../assets/images/mesh_vpn.png"
 badge: "New post"
 tags: ["mesh", "vpn", "wireguard"]
 ---

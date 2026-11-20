@@ -11,29 +11,23 @@ export async function getStaticPaths({ paginate }) {
   // Every tag in use, deduplicated — the filter row links into the tag archive,
   // which existed but had nothing pointing at it from here.
   const tags = [...new Set(posts.flatMap((p) => p.data.tags || []))].sort();
-  return paginate(posts, { pageSize: 10, props: { tags } });
+  return paginate(posts, { pageSize: 10, props: { tags, total: posts.length } });
 }
 
-const { page, tags } = Astro.props;
+const { page, tags, total } = Astro.props;
 dayjs.extend(localizedFormat);
 ---
 
 <BaseLayout title="Blog" sideBarActiveItemID="blog">
   <!-- The header spans the full column: copy on the left, the feed as a real
        button on the right. Inline in a sentence it read as body text. -->
-  <header
-    class="flex flex-wrap items-end justify-between gap-6"
-    style="border-bottom: 1px solid var(--color-divider); padding-bottom: var(--space-6); margin-bottom: var(--space-6);"
-  >
-    <div style="max-width: 62ch;">
-      <div class="i-kicker" style="margin-bottom: var(--space-3);">Writing</div>
-      <h1 class="i-h1" style="margin-bottom: var(--space-4);">Notes from running infrastructure</h1>
-      <p style="margin: 0; font-size: 17px; line-height: 1.6; text-wrap: pretty;">
-        Long-form posts on btrfs, replication, Kubernetes and the unglamorous parts of platform work.
-      </p>
+  <header class="i-page-head">
+    <div>
+      <h1 class="i-h1">Notes from running infrastructure</h1>
+      <p class="i-lede">Long-form posts on btrfs, replication, Kubernetes and the unglamorous parts of platform work.</p>
     </div>
     <a href="/rss.xml" class="i-btn i-btn-secondary">
-      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" style="fill: currentColor;">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
         <path d="M19 20.001C19 11.729 12.271 5 4 5v2c7.168 0 13 5.832 13 13.001h2z"></path>
         <path d="M12 20.001h2C14 14.486 9.514 10 4 10v2c4.411 0 8 3.589 8 8.001z"></path>
         <circle cx="6" cy="18" r="2"></circle>
@@ -42,12 +36,12 @@ dayjs.extend(localizedFormat);
     </a>
   </header>
 
+  {/* Topic links only once there is something to choose between: with a
+      handful of posts, a filter row is furniture. */}
   {
-    tags.length > 0 && (
-      <div class="flex flex-wrap items-center gap-2" style="margin-bottom: var(--space-8);">
-        <span class="i-kicker" style="font-size: 12px; margin-right: var(--space-2);">
-          Filter
-        </span>
+    total >= 4 && tags.length > 0 && (
+      <div class="i-topics">
+        <span class="i-label">Topics</span>
         <span class="i-tag i-tag-accent">All</span>
         {tags.map((tag) => (
           <a href={`/blog/tag/${tag}`} class="i-tag i-tag-outline">
@@ -60,11 +54,9 @@ dayjs.extend(localizedFormat);
 
   {
     page.data.length === 0 ? (
-      <div style="border-left: 2px solid var(--color-accent); padding: var(--space-4) var(--space-6); background: var(--color-accent-100);">
-        <p style="margin: 0 0 var(--space-2); font-family: var(--font-heading); font-weight: 600; font-size: 18px;">
-          Nothing published yet
-        </p>
-        <p style="margin: 0; font-size: 15px;">Check back later, or subscribe by RSS to hear about the first post.</p>
+      <div class="i-note">
+        <p class="i-h4">Nothing published yet</p>
+        <p>Check back later, or subscribe by RSS to hear about the first post.</p>
       </div>
     ) : (
       <div class="flex flex-col gap-6">
@@ -79,6 +71,7 @@ dayjs.extend(localizedFormat);
             tags={post.data.tags}
             date={dayjs(post.data.pubDate).format("ll")}
             readingTime={readingTime(post.body)}
+            headingLevel={2}
           />
         ))}
       </div>
@@ -87,25 +80,22 @@ dayjs.extend(localizedFormat);
 
   {
     (page.url.prev || page.url.next) && (
-      <div
-        class="flex justify-between"
-        style="border-top: 1px solid var(--color-divider); margin-top: calc(var(--space-8) * 1.4); padding-top: var(--space-6);"
-      >
+      <nav class="i-pager" aria-label="Pages">
         {page.url.prev ? (
           <a href={page.url.prev} class="i-btn i-btn-secondary">
-            ← Recent posts
+            Newer posts
           </a>
         ) : (
           <span />
         )}
         {page.url.next ? (
           <a href={page.url.next} class="i-btn i-btn-secondary">
-            Older posts →
+            Older posts
           </a>
         ) : (
           <span />
         )}
-      </div>
+      </nav>
     )
   }
 </BaseLayout>

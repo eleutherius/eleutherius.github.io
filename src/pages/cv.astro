@@ -224,7 +224,7 @@ const githubShown = GITHUB_URL.replace(/^https?:\/\//, "");
   }
   .cv-role {
     margin: var(--space-2) 0 var(--space-4);
-    font-size: 20px;
+    font-size: 1.25rem;
     font-weight: 500;
     line-height: 1.3;
   }
@@ -237,7 +237,7 @@ const githubShown = GITHUB_URL.replace(/^https?:\/\//, "");
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-2) var(--space-6);
-    font-size: 15px;
+    font-size: var(--text-small);
     color: var(--color-neutral-800);
   }
 
@@ -252,7 +252,7 @@ const githubShown = GITHUB_URL.replace(/^https?:\/\//, "");
   .cv-lede {
     margin: 0;
     max-width: 68ch;
-    font-size: 17px;
+    font-size: 1.0625rem;
     line-height: 1.65;
     text-wrap: pretty;
   }
@@ -287,16 +287,19 @@ const githubShown = GITHUB_URL.replace(/^https?:\/\//, "");
       padding: var(--space-4) 0;
     }
     .cv .cv-section {
-      margin-top: var(--space-6);
+      margin-top: 18px;
     }
     .cv .cv-section > .i-h2 {
       font-size: 24px;
-      padding-bottom: var(--space-2);
-      margin-bottom: var(--space-3);
+      padding-bottom: 6px;
+      margin-bottom: 8px;
       break-after: avoid;
     }
     .cv .cv-entry {
-      padding: var(--space-3) 0;
+      padding: 9px 0;
+    }
+    .cv .cv-skills {
+      row-gap: 4px;
     }
     .cv .cv-skills li {
       padding-bottom: 2px;
@@ -314,7 +317,7 @@ const githubShown = GITHUB_URL.replace(/^https?:\/\//, "");
       line-height: 1.55;
     }
     .cv .cv-head {
-      padding-bottom: var(--space-4);
+      padding-bottom: 12px;
     }
     .cv .cv-list,
     .cv .cv-skills,
@@ -327,20 +330,27 @@ const githubShown = GITHUB_URL.replace(/^https?:\/\//, "");
       margin-top: var(--space-2);
     }
   }
+  /* Dates set in the condensed face so "Dec 2021 — Present" stays on one line
+     in the narrow date column, on screen and on paper. */
   .cv-period {
     align-self: start;
     padding-top: 4px;
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: var(--text-small);
+    letter-spacing: 0.01em;
+    white-space: nowrap;
   }
   .cv-org {
     margin-top: 2px;
-    font-size: 15px;
+    font-size: var(--text-small);
     color: var(--color-neutral-700);
   }
   .cv-sub {
     margin: var(--space-4) 0 0;
     font-family: var(--font-heading);
     font-weight: 600;
-    font-size: 16px;
+    font-size: 1rem;
   }
   .cv-list {
     margin: var(--space-3) 0 0;
@@ -348,7 +358,7 @@ const githubShown = GITHUB_URL.replace(/^https?:\/\//, "");
     max-width: 72ch;
     display: grid;
     gap: var(--space-2);
-    font-size: 15.5px;
+    font-size: var(--text-small);
     line-height: 1.55;
     list-style: square;
   }
@@ -363,7 +373,7 @@ const githubShown = GITHUB_URL.replace(/^https?:\/\//, "");
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-2) var(--space-6);
-    font-size: 15.5px;
+    font-size: var(--text-small);
   }
   @media (min-width: 768px) {
     .cv-skills {
@@ -387,7 +397,7 @@ const githubShown = GITHUB_URL.replace(/^https?:\/\//, "");
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-4) var(--space-8);
-    font-size: 15.5px;
+    font-size: var(--text-small);
   }
   .cv-langs li {
     display: flex;

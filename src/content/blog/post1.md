@@ -2,7 +2,7 @@
 title: "Why I built btrep: a zrepl-equivalent for btrfs"
 description: "A story about backups, paranoia, and finding out that  \"just use `btrfs send`\" hides more complexity than anyone admits."
 pubDate: "May 21 2026"
-heroImage: "/btrepl_splash.webp"
+heroImage: "../../assets/images/btrepl_splash.webp"
 badge: "New post"
 tags: ["btrfs", "btrepl", "redundancy"]
 ---

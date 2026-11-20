@@ -6,6 +6,7 @@ import { readingTime } from "../lib/readingTime";
 import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import { CONTACT_EMAIL, LINKEDIN_URL } from "../config";
+import wayfareImg from "../assets/images/wayfare.png";
 
 dayjs.extend(localizedFormat);
 const last_posts = (await getPublishedPosts()).slice(0, 2);
@@ -24,73 +25,58 @@ const spec = [
 // Recruiters scan for keywords and shouldn't have to open the CV to find them.
 const stack = [
   { group: "Orchestration", items: ["Kubernetes", "Helm", "ArgoCD", "Docker"] },
-  { group: "Cloud & IaC", items: ["AWS", "Terraform", "Ansible", "Linux"] },
+  { group: "Cloud and IaC", items: ["AWS", "Terraform", "Ansible", "Linux"] },
   { group: "Delivery", items: ["GitHub Actions", "GitLab CI", "Bash", "Python"] },
   { group: "Observability", items: ["Prometheus", "Grafana", "Loki", "OpenTelemetry"] },
 ];
 ---
 
 <BaseLayout sideBarActiveItemID="home">
-  <!-- ─────────── hero: two columns, so the field is actually used ─────────── -->
-  <section class="grid lg:grid-cols-[minmax(0,1.45fr)_minmax(0,1fr)] gap-8 lg:gap-10 items-start">
-    <div>
-      <h1 class="i-h1" style="margin-bottom: var(--space-6);">
-        I make infrastructure boring, so product teams can ship fast.
-      </h1>
+  <!-- Hero. The headline is the one loud element on the site: set big in the
+       condensed face across the full width, like the title on a drawing. The
+       lede and the recruiter card share the row under it. -->
+  <section class="hero">
+    <h1 class="i-display hero-title"><span>I make infrastructure boring,</span> <span>so product teams can ship fast.</span></h1>
 
-      <p style="margin: 0 0 var(--space-8); font-size: 18px; line-height: 1.62; max-width: 54ch; text-wrap: pretty;">
-        I'm Oleksandr — a senior platform engineer who builds the paved road: Kubernetes platforms, Terraform-managed cloud,
-        CI/CD developers don't fight, and observability that catches trouble before users do. I also ship small products
-        of my own.
-      </p>
-
-      <div class="flex flex-wrap gap-3">
-        <a href={`mailto:${CONTACT_EMAIL}`} class="i-btn i-btn-primary">Hire me for platform work</a>
-        <a href="/cv" class="i-btn i-btn-secondary">Read the CV</a>
+    <div class="hero-body">
+      <div class="flex flex-col gap-8">
+        <p class="i-lede">
+          I'm Oleksandr — a senior platform engineer who builds the paved road: Kubernetes platforms, Terraform-managed
+          cloud, CI/CD developers don't fight, and observability that catches trouble before users do. I also ship small
+          products of my own.
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <a href={`mailto:${CONTACT_EMAIL}`} class="i-btn i-btn-primary">Hire me for platform work</a>
+          <a href="/cv" class="i-btn i-btn-secondary">Read the CV</a>
+        </div>
       </div>
+
+      <!-- The title block: hairline cells, label over value. -->
+      <dl class="blueprint spec">
+        {
+          spec.map((row) => (
+            <div class="spec-row">
+              <dt class="i-label">{row.label}</dt>
+              <dd>{row.value}</dd>
+            </div>
+          ))
+        }
+        <div class="spec-row">
+          <dt class="i-label">Contact</dt>
+          <dd class="flex flex-wrap gap-x-5 gap-y-1">
+            <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+            <a href={LINKEDIN_URL} target="_blank" rel="noopener">LinkedIn</a>
+          </dd>
+        </div>
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      </dl>
     </div>
-
-    <!-- A drawn plate: hairline cells, label over value. The system's grid,
-         made visible rather than implied by whitespace. -->
-    <dl class="blueprint m-0" style="padding: 0;">
-      {
-        spec.map((row, i) => (
-          <div style={`padding: var(--space-4) var(--space-6); ${i > 0 ? "border-top: 1px solid var(--color-divider);" : ""}`}>
-            <dt class="i-kicker" style="font-size: 11.5px; margin-bottom: var(--space-2);">
-              {row.label}
-            </dt>
-            <dd style="margin: 0; font-size: 15px; line-height: 1.5;">{row.value}</dd>
-          </div>
-        ))
-      }
-      <div style="padding: var(--space-4) var(--space-6); border-top: 1px solid var(--color-divider);">
-        <dt class="i-kicker" style="font-size: 11.5px; margin-bottom: var(--space-2);">Contact</dt>
-        <dd class="flex flex-wrap gap-x-5 gap-y-1" style="margin: 0; font-size: 15px; line-height: 1.5;">
-          <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
-          <a href={LINKEDIN_URL} target="_blank" rel="noopener">LinkedIn</a>
-        </dd>
-      </div>
-      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
-    </dl>
   </section>
 
-  <!-- ─────────── selected work ─────────── -->
-  <section style="margin-top: calc(var(--space-8) * 2.2);">
-    <div
-      class="flex items-end justify-between gap-6"
-      style="border-bottom: 1px solid var(--color-divider); padding-bottom: var(--space-4); margin-bottom: var(--space-6);"
-    >
-      <div>
-        <div class="i-kicker" style="margin-bottom: var(--space-2);">01 — Selected work</div>
-        <h2 class="i-h2">Things I built and run</h2>
-      </div>
-      <a
-        href="/projects"
-        class="no-underline whitespace-nowrap"
-        style="font-family: var(--font-heading); font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase;"
-      >
-        All projects →
-      </a>
+  <section class="i-section">
+    <div class="i-section-head">
+      <h2 class="i-h2">Things I built and run</h2>
+      <a href="/projects" class="i-link">All projects</a>
     </div>
 
     <!-- Flagship full width, the two repos side by side, the small one as a
@@ -99,7 +85,7 @@ const stack = [
       <div class="md:col-span-2">
         <HorizontalCard
           title="Wayfare"
-          img="/wayfare.png"
+          img={wayfareImg}
           desc="A personal travel guide where every place and route is typed Markdown, rendered onto interactive Leaflet maps at build time. Content lives in git; the site stays static and fast."
           url="https://eleutherius.github.io/wayfare"
           badge="Live product"
@@ -117,45 +103,33 @@ const stack = [
         title="Platform Engineer Laboratory"
         desc="Runnable reference setups for the platform stack — the sandbox behind everything I write about."
         url="https://github.com/eleutherius/pe-lab"
-        badge="Lab & notes"
+        badge="Lab and notes"
         tags={["Kubernetes", "Terraform", "CI/CD"]}
       />
-      <a
-        href="https://eleutherius.github.io/seven-minute-workout"
-        class="i-card md:col-span-2 flex-row items-center justify-between gap-6 flex-wrap"
-        style="padding: var(--space-4) var(--space-6);"
-      >
-        <div class="flex items-baseline gap-5 flex-wrap">
-          <h2 class="i-h4">7 minutes</h2>
-          <p style="margin: 0; font-size: 15px; color: var(--color-neutral-700);">
-            Offline-first PWA for morning home workouts.
-          </p>
+      <a href="https://eleutherius.github.io/seven-minute-workout" class="i-card slim md:col-span-2">
+        <div class="flex items-baseline gap-x-5 gap-y-1 flex-wrap">
+          <h3 class="i-h4">7 minutes</h3>
+          <p class="slim-desc">Offline-first PWA for morning home workouts.</p>
         </div>
         <div class="flex items-center gap-5">
           <span class="i-tag i-tag-outline">PWA</span>
-          <span class="i-open">Open →</span>
+          <span class="i-link">Open</span>
         </div>
         <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
       </a>
     </div>
   </section>
 
-  <!-- ─────────── stack: four equal cells, the grid at its most literal ─────────── -->
-  <section style="margin-top: calc(var(--space-8) * 2.2);">
-    <div style="border-bottom: 1px solid var(--color-divider); padding-bottom: var(--space-4); margin-bottom: var(--space-6);">
-      <div class="i-kicker" style="margin-bottom: var(--space-2);">02 — Stack</div>
+  <section class="i-section">
+    <div class="i-section-head">
       <h2 class="i-h2">What I work in daily</h2>
     </div>
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-8">
       {
         stack.map((col) => (
           <div>
-            <div
-              style="font-family: var(--font-heading); font-weight: 600; font-size: 15px; letter-spacing: 0.04em; text-transform: uppercase; padding-bottom: var(--space-3); margin-bottom: var(--space-3); border-bottom: 1px solid var(--color-divider);"
-            >
-              {col.group}
-            </div>
-            <ul class="flex flex-col gap-2 list-none p-0 m-0" style="font-size: 14.5px; color: var(--color-neutral-800);">
+            <h3 class="stack-head">{col.group}</h3>
+            <ul class="stack-list">
               {col.items.map((item) => (
                 <li>{item}</li>
               ))}
@@ -166,27 +140,12 @@ const stack = [
     </div>
   </section>
 
-  <!-- ─────────── writing ─────────── -->
   {
     last_posts.length > 0 && (
-      <section style="margin-top: calc(var(--space-8) * 2.2);">
-        <div
-          class="flex items-end justify-between gap-6"
-          style="border-bottom: 1px solid var(--color-divider); padding-bottom: var(--space-4); margin-bottom: var(--space-6);"
-        >
-          <div>
-            <div class="i-kicker" style="margin-bottom: var(--space-2)">
-              03 — Writing
-            </div>
-            <h2 class="i-h2">Latest from the blog</h2>
-          </div>
-          <a
-            href="/blog/"
-            class="no-underline whitespace-nowrap"
-            style="font-family: var(--font-heading); font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase;"
-          >
-            All posts →
-          </a>
+      <section class="i-section">
+        <div class="i-section-head">
+          <h2 class="i-h2">Latest from the blog</h2>
+          <a href="/blog/" class="i-link">All posts</a>
         </div>
 
         <div class="flex flex-col gap-6">
@@ -207,27 +166,131 @@ const stack = [
     )
   }
 
-  <!-- ─────────── contact ─────────── -->
-  <section
-    class="blueprint flex flex-wrap items-center justify-between gap-6"
-    style="margin-top: calc(var(--space-8) * 2.2); padding: calc(var(--space-8) * 1.2) calc(var(--space-8) * 1.2); background: var(--color-accent-900); color: var(--color-bg);"
-  >
+  <section class="i-section blueprint contact">
     <div style="max-width: 46ch;">
-      <h2 class="i-h2" style="color: var(--color-bg); margin-bottom: var(--space-3);">
-        Hiring for platform, SRE or DevOps?
-      </h2>
-      <p style="margin: 0; font-size: 16px; line-height: 1.6; color: var(--color-accent-200); text-wrap: pretty;">
+      <h2 class="i-h2 contact-title">Hiring for platform, SRE or DevOps?</h2>
+      <p class="contact-text">
         Tell me what breaks today and what you want shipped next quarter. I reply within a day, and I'll say plainly if
         I'm not the right fit.
       </p>
     </div>
-    <a
-      href={`mailto:${CONTACT_EMAIL}`}
-      class="i-btn"
-      style="background: var(--color-bg); border-color: var(--color-bg); color: var(--color-accent-900); padding: var(--space-4) var(--space-8);"
-    >
-      Get in touch
-    </a>
+    <a href={`mailto:${CONTACT_EMAIL}`} class="i-btn contact-btn">Get in touch</a>
     <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
   </section>
 </BaseLayout>
+
+<style>
+  .hero {
+    display: grid;
+    gap: var(--space-8);
+    padding-top: var(--space-4);
+  }
+  /* On a phone the headline wraps where it must (balanced, no lone last word).
+     Where there is room, each clause holds together so the break falls at the
+     comma: two lines, one thought per line. */
+  .hero-title {
+    max-width: 21ch;
+  }
+  @media (min-width: 1100px) {
+    .hero-title {
+      max-width: none;
+    }
+    .hero-title span {
+      display: inline-block;
+    }
+  }
+  .hero-body {
+    display: grid;
+    gap: var(--space-8);
+    align-items: start;
+  }
+  @media (min-width: 1100px) {
+    .hero-body {
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+      gap: var(--space-12);
+    }
+  }
+
+  .spec {
+    margin: 0;
+  }
+  .spec-row {
+    padding: var(--space-3) var(--space-6);
+  }
+  .spec-row + .spec-row {
+    border-top: 1px solid var(--color-divider);
+  }
+  .spec-row dt {
+    margin-bottom: var(--space-1);
+  }
+  .spec-row dd {
+    margin: 0;
+    font-size: var(--text-small);
+    line-height: 1.5;
+  }
+
+  .slim {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3) var(--space-6);
+    padding: var(--space-4) var(--space-6);
+  }
+  .slim-desc {
+    margin: 0;
+    font-size: var(--text-small);
+    color: var(--color-neutral-700);
+  }
+
+  .stack-head {
+    margin: 0 0 var(--space-3);
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--color-divider);
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 1.125rem;
+    line-height: 1.2;
+  }
+  .stack-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: var(--space-2);
+    color: var(--color-neutral-800);
+  }
+
+  .contact {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-6);
+    padding: var(--space-8);
+    background: var(--color-accent-900);
+    color: var(--color-bg);
+  }
+  .contact-title {
+    color: var(--color-bg);
+    margin-bottom: var(--space-3);
+  }
+  /* Light text on the dark panel: a touch more leading, as the eye needs it. */
+  .contact-text {
+    margin: 0;
+    line-height: 1.65;
+    color: var(--color-accent-200);
+    text-wrap: pretty;
+  }
+  .contact-btn {
+    background: var(--color-bg);
+    border-color: var(--color-bg);
+    color: var(--color-accent-900);
+    padding-inline: var(--space-8);
+  }
+  .contact-btn:hover {
+    background: var(--color-accent-100);
+    border-color: var(--color-accent-100);
+    color: var(--color-accent-900);
+  }
+</style>

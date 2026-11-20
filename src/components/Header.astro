@@ -1,24 +1,41 @@
 ---
-// The theme selector is gone — the site has one theme now.
+import { NAV } from "../config";
+const { active } = Astro.props;
 ---
 
-<div
-  class="sticky top-0 z-30 flex h-16 w-full justify-center lg:hidden no-print"
-  style="background: var(--color-bg); border-bottom: 1px solid var(--color-divider);"
->
-  <div class="flex items-center w-full px-4 gap-3">
-    <label for="my-drawer" class="i-btn i-btn-icon" aria-label="Open menu">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-5 h-5 stroke-current">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"></path>
-      </svg>
-    </label>
-    <a
-      href="/"
-      class="flex items-center gap-2 no-underline"
-      style="font-family: var(--font-heading); font-weight: 600; font-size: 17px; letter-spacing: 0.01em; text-transform: uppercase; color: var(--color-text);"
-    >
-      <span style="width: 14px; height: 14px; background: var(--color-accent); display: block;"></span>
-      Oleksandr Liakhov
-    </a>
-  </div>
-</div>
+<!-- Narrow screens only. Four destinations fit on one line at 360px, so they
+     are shown, not hidden behind a menu button. Not sticky: on a phone the
+     screen height belongs to the content. -->
+<header class="site-bar no-print">
+  <a href="/" class="bar-name">
+    <span class="bar-mark" aria-hidden="true"></span>
+    Oleksandr Liakhov
+  </a>
+  <nav class="i-nav i-nav-bar" aria-label="Main">
+    {NAV.map((item) => <a href={item.href} aria-current={active === item.id ? "page" : undefined}>{item.label}</a>)}
+  </nav>
+</header>
+
+<style>
+  .site-bar {
+    padding: var(--space-4) var(--space-6) 0;
+    border-bottom: 1px solid var(--color-divider);
+  }
+  .bar-name {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 1.125rem;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    color: var(--color-text);
+    text-decoration: none;
+  }
+  .bar-mark {
+    width: 0.75rem;
+    height: 0.75rem;
+    background: var(--color-accent);
+  }
+</style>

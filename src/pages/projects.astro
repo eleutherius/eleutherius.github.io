@@ -1,5 +1,11 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { Image } from "astro:assets";
+import { CONTACT_EMAIL, GITHUB_URL } from "../config";
+import wayfareImg from "../assets/images/wayfare.png";
+import btreplImg from "../assets/images/btrepl.webp";
+import peLabImg from "../assets/images/pe_lab.webp";
+import sevenImg from "../assets/images/7_mins.webp";
 
 // Every field here is a fact a reader can act on. The old page said "NEW" on
 // all four projects and nothing else — a badge that never expires carries no
@@ -8,21 +14,26 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 // `status` is the field that makes a portfolio feel alive: it admits which
 // things are moving and which are parked. Saying "archived" out loud is more
 // credible than implying everything is active.
+//
+// Layout: the two live products run full width (image beside text); the two
+// repositories pair up in the middle row. The paired images share a 16:9 frame
+// so the cards line up — they are illustrations, not screenshots, so trimming
+// the bottom of the taller one loses nothing.
 const projects = [
   {
     title: "Wayfare",
-    img: "/wayfare.png",
+    img: wayfareImg,
     kind: "Live product",
     status: "Active",
     desc: "A personal travel guide where every place and route is typed Markdown, rendered onto interactive Leaflet maps at build time. Content lives in git; the site stays static and free to host.",
     stack: ["Astro", "Leaflet", "Markdown content"],
     live: "https://eleutherius.github.io/wayfare",
     repo: "https://github.com/eleutherius/wayfare",
-    span: true,
+    wide: true,
   },
   {
     title: "btrepl",
-    img: "/btrepl.webp",
+    img: btreplImg,
     kind: "Open source",
     status: "Active",
     desc: "Incremental btrfs geo-replication over SSH, driven by a systemd timer. Offsite snapshots without a backup vendor — and without hand-rolled shell glue tracking parent snapshots.",
@@ -31,8 +42,8 @@ const projects = [
   },
   {
     title: "Platform Engineer Laboratory",
-    img: "/pe_lab.webp",
-    kind: "Lab & notes",
+    img: peLabImg,
+    kind: "Lab and notes",
     status: "Active",
     desc: "Runnable reference setups for Kubernetes, Terraform and CI/CD — the sandbox behind everything I write about. Clone a folder, get a working environment.",
     stack: ["Kubernetes", "Terraform", "CI/CD"],
@@ -40,80 +51,73 @@ const projects = [
   },
   {
     title: "7 minutes",
-    img: "/7_mins.webp",
+    img: sevenImg,
     kind: "PWA",
     status: "Maintained",
     desc: "An offline-first progressive web app for morning home workouts. Installs to the home screen, runs with no network and no account.",
     stack: ["PWA", "Service Worker", "Vanilla JS"],
     live: "https://eleutherius.github.io/seven-minute-workout",
     repo: "https://github.com/eleutherius/seven-minute-workout",
+    wide: true,
   },
 ];
-
-import { Image } from "astro:assets";
-import { CONTACT_EMAIL } from "../config";
 ---
 
 <BaseLayout title="Projects" sideBarActiveItemID="projects">
-  <header
-    class="flex flex-wrap items-end justify-between gap-6"
-    style="border-bottom: 1px solid var(--color-divider); padding-bottom: var(--space-6); margin-bottom: var(--space-8);"
-  >
-    <div style="max-width: 60ch;">
-      <div class="i-kicker" style="margin-bottom: var(--space-3);">Work</div>
-      <h1 class="i-h1" style="margin-bottom: var(--space-4);">Things I built and run</h1>
-      <p style="margin: 0; font-size: 17px; line-height: 1.6; text-wrap: pretty;">
+  <header class="i-page-head">
+    <div>
+      <h1 class="i-h1">Things I built and run</h1>
+      <p class="i-lede">
         Four projects, all still running. Each one solves a problem I actually had — the tooling I wanted and couldn't
         find, and two products I use every week.
       </p>
     </div>
-    <a href="https://github.com/eleutherius" class="i-btn i-btn-secondary">All repositories →</a>
+    <a href={GITHUB_URL} class="i-btn i-btn-secondary">All repositories</a>
   </header>
 
   <div class="grid md:grid-cols-2 gap-6">
     {
       projects.map((p) => (
-        <article class={`i-card ${p.span ? "md:col-span-2" : ""}`} style="gap: var(--space-4);">
-          <div class={p.span ? "grid md:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] gap-6" : ""}>
-            <div class="i-media">
-              <Image src={p.img} width={960} height={540} format="webp" alt={p.title} />
+        <article class:list={["i-card proj", { "md:col-span-2 proj-wide": p.wide }]}>
+          <div class:list={["i-media", { "proj-frame": !p.wide }]}>
+            <Image
+              src={p.img}
+              widths={[480, 720, 960]}
+              sizes={p.wide ? "(min-width: 768px) 30rem, 100vw" : "(min-width: 768px) 28rem, 100vw"}
+              format="webp"
+              alt=""
+            />
+          </div>
+
+          <div class="proj-body flex flex-col gap-3 min-w-0">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="i-tag i-tag-accent">{p.kind}</span>
+              <span class="i-tag i-tag-neutral">{p.status}</span>
             </div>
 
-            <div class="flex flex-col gap-3 min-w-0">
-              <div class="flex items-center gap-2 flex-wrap">
-                <span class="i-tag i-tag-accent">{p.kind}</span>
-                <span class="i-tag i-tag-neutral">{p.status}</span>
-              </div>
+            <h2 class="i-h3">{p.title}</h2>
 
-              <h2 class="i-h3">{p.title}</h2>
+            <p class="proj-desc">{p.desc}</p>
 
-              <p style="margin: 0; font-size: 15.5px; line-height: 1.6; color: var(--color-neutral-800); text-wrap: pretty;">
-                {p.desc}
-              </p>
+            <div class="flex flex-wrap gap-2">
+              {p.stack.map((s) => (
+                <span class="i-tag i-tag-outline">{s}</span>
+              ))}
+            </div>
 
-              <div class="flex flex-wrap gap-2" style="margin-top: var(--space-1);">
-                {p.stack.map((s) => (
-                  <span class="i-tag i-tag-outline">{s}</span>
-                ))}
-              </div>
-
-              {/* Two destinations, named. A single card-wide link forces a guess
-                  about whether you land on the product or the source. */}
-              <div
-                class="flex flex-wrap gap-2 mt-auto"
-                style="padding-top: var(--space-4); border-top: 1px solid var(--color-divider);"
-              >
-                {p.live && (
-                  <a href={p.live} class="i-btn i-btn-primary" style="font-size: 13px;">
-                    Open it
-                  </a>
-                )}
-                {p.repo && (
-                  <a href={p.repo} class="i-btn i-btn-secondary" style="font-size: 13px;">
-                    Source
-                  </a>
-                )}
-              </div>
+            {/* Two destinations, named. A single card-wide link forces a guess
+                about whether you land on the product or the source. */}
+            <div class="proj-actions">
+              {p.live && (
+                <a href={p.live} class="i-btn i-btn-primary">
+                  Open it
+                </a>
+              )}
+              {p.repo && (
+                <a href={p.repo} class="i-btn i-btn-secondary">
+                  Source
+                </a>
+              )}
             </div>
           </div>
           <i class="corner tl" />
@@ -125,25 +129,82 @@ import { CONTACT_EMAIL } from "../config";
     }
   </div>
 
-  <section
-    class="blueprint flex flex-wrap items-center justify-between gap-6"
-    style="margin-top: calc(var(--space-8) * 2); padding: calc(var(--space-8) * 1.1) calc(var(--space-8) * 1.2); background: var(--color-accent-900); color: var(--color-bg);"
-  >
+  <section class="i-section blueprint contact">
     <div style="max-width: 48ch;">
-      <h2 class="i-h4" style="color: var(--color-bg); margin-bottom: var(--space-2);">
-        Want something like this for your team?
-      </h2>
-      <p style="margin: 0; font-size: 15px; line-height: 1.6; color: var(--color-accent-200);">
-        The same instincts go into platform work: small tools, no vendor, boring to operate.
-      </p>
+      <h2 class="i-h3 contact-title">Want something like this for your team?</h2>
+      <p class="contact-text">The same instincts go into platform work: small tools, no vendor, boring to operate.</p>
     </div>
-    <a
-      href={`mailto:${CONTACT_EMAIL}`}
-      class="i-btn"
-      style="background: var(--color-bg); border-color: var(--color-bg); color: var(--color-accent-900);"
-    >
-      Get in touch
-    </a>
+    <a href={`mailto:${CONTACT_EMAIL}`} class="i-btn contact-btn">Get in touch</a>
     <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
   </section>
 </BaseLayout>
+
+<style>
+  .proj {
+    gap: var(--space-6);
+  }
+  .proj-body {
+    flex: 1;
+  }
+  @media (min-width: 768px) {
+    .proj-wide {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+      align-items: start;
+    }
+  }
+  .proj-frame {
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+  }
+  .proj-frame :global(img) {
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+  }
+  .proj-desc {
+    margin: 0;
+    font-size: var(--text-small);
+    line-height: 1.6;
+    color: var(--color-neutral-800);
+    text-wrap: pretty;
+  }
+  .proj-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-top: auto;
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-divider);
+  }
+
+  .contact {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-6);
+    padding: var(--space-8);
+    background: var(--color-accent-900);
+    color: var(--color-bg);
+  }
+  .contact-title {
+    color: var(--color-bg);
+    margin-bottom: var(--space-2);
+  }
+  .contact-text {
+    margin: 0;
+    line-height: 1.65;
+    color: var(--color-accent-200);
+  }
+  .contact-btn {
+    background: var(--color-bg);
+    border-color: var(--color-bg);
+    color: var(--color-accent-900);
+  }
+  .contact-btn:hover {
+    background: var(--color-accent-100);
+    border-color: var(--color-accent-100);
+    color: var(--color-accent-900);
+  }
+</style>

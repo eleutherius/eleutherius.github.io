@@ -1,33 +1,114 @@
 ---
-import SideBarFooter from "./SideBarFooter.astro";
 import { Image } from "astro:assets";
-import SideBarMenu from "./SideBarMenu.astro";
-const { sideBarActiveItemID } = Astro.props;
+import portrait from "../assets/images/profile.webp";
+import { NAV, GITHUB_URL, LINKEDIN_URL } from "../config";
+
+const { active } = Astro.props;
+
+// Social links sit under the menu. The QR card is here rather than in the nav:
+// it's a tool you reach for, not a page to read.
+const links = [
+  { href: GITHUB_URL, label: "GitHub", external: true, icon: "github" },
+  { href: LINKEDIN_URL, label: "LinkedIn", external: true, icon: "linkedin" },
+  { href: "/rss.xml", label: "RSS feed", external: false, icon: "rss" },
+  { href: "/card", label: "Share this site (QR code)", external: false, icon: "qr" },
+];
 ---
 
-<div class="drawer-side z-40 no-print">
-  <label for="my-drawer" class="drawer-overlay"></label>
-  <aside
-    class="px-4 pt-6 pb-6 h-auto min-h-full w-[19rem] flex flex-col gap-6"
-    style="background: var(--color-bg); border-right: 1px solid var(--color-divider); color: var(--color-text);"
-  >
-    <a href="/" class="no-underline">
+<aside class="site-aside no-print">
+  <div class="flex flex-col gap-6 w-full px-4 pt-6 pb-6">
+    <a href="/" class="i-link-plain" aria-label="Oleksandr Liakhov — home">
       <!-- Square, hairline-framed, its own colours. -->
-      <figure class="blueprint i-portrait mb-4" style="aspect-ratio: 1;">
-        <Image format="webp" width={600} height={600} src="/profile.webp" alt="Oleksandr Liakhov" />
+      <figure class="blueprint i-portrait m-0" style="aspect-ratio: 1;">
+        <Image src={portrait} width={560} height={560} format="webp" alt="" loading="eager" />
         <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
       </figure>
-      <div
-        style="font-family: var(--font-heading); font-weight: 600; font-size: 21px; letter-spacing: 0.01em; text-transform: uppercase; line-height: 1.12; color: var(--color-text);"
-      >
-        Oleksandr<br />Liakhov
-      </div>
-      <div class="mt-1" style="font-size: 13.5px; line-height: 1.5; color: var(--color-neutral-700);">
-        Platform &amp; DevOps engineer
-      </div>
     </a>
+    <div>
+      <div class="side-name">Oleksandr<br />Liakhov</div>
+      <div class="side-role">Senior Platform / DevOps Engineer</div>
+    </div>
 
-    <SideBarMenu sideBarActiveItemID={sideBarActiveItemID} />
-    <SideBarFooter />
-  </aside>
-</div>
+    <nav class="i-nav i-nav-side flex flex-col" aria-label="Main">
+      {NAV.map((item) => <a href={item.href} aria-current={active === item.id ? "page" : undefined}>{item.label}</a>)}
+    </nav>
+
+    <div class="flex gap-1">
+      {
+        links.map((l) => (
+          <a
+            href={l.href}
+            class="i-btn i-btn-icon"
+            aria-label={l.label}
+            title={l.label}
+            {...(l.external ? { target: "_blank", rel: "noopener" } : {})}
+          >
+            {l.icon === "github" && (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M12.026 2c-5.509 0-9.974 4.465-9.974 9.974 0 4.406 2.857 8.145 6.821 9.465.499.09.679-.217.679-.481 0-.237-.008-.865-.011-1.696-2.775.602-3.361-1.338-3.361-1.338-.452-1.152-1.107-1.459-1.107-1.459-.905-.619.069-.605.069-.605 1.002.07 1.527 1.028 1.527 1.028.89 1.524 2.336 1.084 2.902.829.091-.645.351-1.085.635-1.334-2.214-.251-4.542-1.107-4.542-4.93 0-1.087.389-1.979 1.024-2.675-.101-.253-.446-1.268.099-2.64 0 0 .837-.269 2.742 1.021a9.582 9.582 0 0 1 2.496-.336 9.554 9.554 0 0 1 2.496.336c1.906-1.291 2.742-1.021 2.742-1.021.545 1.372.203 2.387.099 2.64.64.696 1.024 1.587 1.024 2.675 0 3.833-2.33 4.675-4.552 4.922.355.308.675.916.675 1.846 0 1.334-.012 2.41-.012 2.737 0 .267.178.577.687.479C19.146 20.115 22 16.379 22 11.974 22 6.465 17.535 2 12.026 2z"
+                />
+              </svg>
+            )}
+            {l.icon === "linkedin" && (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <circle cx="4.983" cy="5.009" r="2.188" />
+                <path d="M9.237 8.855v12.139h3.769v-6.003c0-1.584.298-3.118 2.262-3.118 1.937 0 1.961 1.811 1.961 3.218v5.904H21v-6.657c0-3.27-.704-5.783-4.526-5.783-1.835 0-3.065 1.007-3.568 1.96h-.051v-1.66H9.237zm-6.142 0H6.87v12.139H3.095z" />
+              </svg>
+            )}
+            {l.icon === "rss" && (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M19 20.001C19 11.729 12.271 5 4 5v2c7.168 0 13 5.832 13 13.001h2z" />
+                <path d="M12 20.001h2C14 14.486 9.514 10 4 10v2c4.411 0 8 3.589 8 8.001z" />
+                <circle cx="6" cy="18" r="2" />
+              </svg>
+            )}
+            {l.icon === "qr" && (
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="square"
+                aria-hidden="true"
+              >
+                <rect x="3" y="3" width="7" height="7" />
+                <rect x="14" y="3" width="7" height="7" />
+                <rect x="3" y="14" width="7" height="7" />
+                <path d="M14 14h3v3h-3zM18 18h3v3h-3M14 21h3" />
+              </svg>
+            )}
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</aside>
+
+<style>
+  .side-name {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 1.375rem;
+    line-height: 1.05;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+  }
+  .side-role {
+    margin-top: var(--space-2);
+    font-size: var(--text-label);
+    line-height: 1.4;
+    color: var(--color-neutral-700);
+  }
+  .i-link-plain {
+    display: block;
+    text-decoration: none;
+  }
+  .i-link-plain:hover :global(.corner) {
+    color: var(--color-accent-700);
+  }
+</style>

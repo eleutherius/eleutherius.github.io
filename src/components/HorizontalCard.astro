@@ -1,22 +1,48 @@
 ---
 // A blueprint object: square, hairline-bordered, transparent, registration
-// marks at the corners. The old version was a rounded DaisyUI card that grew
-// 2% on hover — Industry line drawings don't scale, the border takes the accent.
+// marks at the corners. On hover the frame and marks take the accent; nothing
+// scales.
 //
+// `img` is an imported image (ImageMetadata), so Astro knows its real size and
+// writes it into the markup: the card doesn't jump when the image arrives.
 // `date` and `readingTime` are optional, so /projects can keep calling this
 // component with the same props it always did.
-const { title, img, desc, url, badge, tags, date, readingTime, target = "_blank" } = Astro.props;
 import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
+interface Props {
+  title: string;
+  img?: ImageMetadata;
+  desc: string;
+  url: string;
+  badge?: string;
+  tags?: string[];
+  date?: string;
+  readingTime?: number;
+  target?: string;
+  /** Heading level for the title: h2 when the list sits directly under the page's h1. */
+  headingLevel?: 2 | 3;
+}
+
+const { title, img, desc, url, badge, tags, date, readingTime, target = "_blank", headingLevel = 3 } = Astro.props;
+const Heading = headingLevel === 2 ? "h2" : "h3";
+const external = target === "_blank";
 // Tags render as plain spans, not links: the whole card is already an anchor,
-// and an <a> inside an <a> is invalid HTML (the old version did exactly that).
-// Tag links live on the blog index filter row and in PostLayout instead.
+// and an <a> inside an <a> is invalid HTML. Tag links live on the blog index
+// and in PostLayout instead.
 ---
 
-<a href={url} target={target} class="i-card i-media-card" data-has-media={img ? "true" : undefined}>
+<a
+  href={url}
+  target={target}
+  rel={external ? "noopener" : undefined}
+  class="i-card i-media-card"
+  data-has-media={img ? "true" : undefined}
+>
   {
     img && (
       <div class="i-media">
-        <Image src={img} width={640} height={480} format="webp" alt={title} />
+        <Image src={img} widths={[320, 480, 720]} sizes="(min-width: 768px) 13rem, 100vw" format="webp" alt="" />
       </div>
     )
   }
@@ -29,13 +55,11 @@ import { Image } from "astro:assets";
         </div>
       )
     }
-    <h2 class="i-h3">
+    <Heading class="i-h3 card-title">
       {title}
-      {badge && <span class="i-tag i-tag-accent ml-2 align-middle">{badge}</span>}
-    </h2>
-    <p style="margin: 0; font-size: 15.5px; line-height: 1.6; color: var(--color-neutral-800); text-wrap: pretty;">
-      {desc}
-    </p>
+      {badge && <span class="i-tag i-tag-accent">{badge}</span>}
+    </Heading>
+    <p class="card-desc">{desc}</p>
     {
       tags && tags.length > 0 && (
         <div class="flex flex-wrap gap-2 mt-1">
@@ -48,3 +72,20 @@ import { Image } from "astro:assets";
   </div>
   <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
 </a>
+
+<style>
+  .card-title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-3);
+  }
+  .card-desc {
+    margin: 0;
+    max-width: 68ch;
+    font-size: var(--text-small);
+    line-height: 1.6;
+    color: var(--color-neutral-800);
+    text-wrap: pretty;
+  }
+</style>

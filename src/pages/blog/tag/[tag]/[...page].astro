@@ -29,13 +29,14 @@ dayjs.extend(localizedFormat);
 ---
 
 <BaseLayout title={"Blog — " + params.tag} sideBarActiveItemID="blog">
-  <header style="border-bottom: 1px solid var(--color-divider); padding-bottom: var(--space-6); margin-bottom: var(--space-6);">
-    <div class="i-kicker" style="margin-bottom: var(--space-3);">Tagged</div>
-    <h1 class="i-h1">{params.tag}</h1>
+  <header class="i-page-head">
+    <div>
+      <h1 class="i-h1">Posts about {params.tag}</h1>
+    </div>
   </header>
 
-  <div class="flex flex-wrap items-center gap-2" style="margin-bottom: var(--space-8);">
-    <span class="i-kicker" style="font-size: 12px; margin-right: var(--space-2);">Filter</span>
+  <div class="i-topics">
+    <span class="i-label">Topics</span>
     <a href="/blog/" class="i-tag i-tag-outline">All</a>
     {
       tags.map((tag) =>
@@ -52,8 +53,8 @@ dayjs.extend(localizedFormat);
 
   {
     page.data.length === 0 ? (
-      <div style="border-left: 2px solid var(--color-accent); padding: var(--space-4) var(--space-6); background: var(--color-accent-100);">
-        <p style="margin: 0; font-size: 15px;">No posts under this tag yet.</p>
+      <div class="i-note">
+        <p>No posts under this tag yet.</p>
       </div>
     ) : (
       <div class="flex flex-col gap-6">
@@ -68,6 +69,7 @@ dayjs.extend(localizedFormat);
             tags={post.data.tags}
             date={dayjs(post.data.pubDate).format("ll")}
             readingTime={readingTime(post.body)}
+            headingLevel={2}
           />
         ))}
       </div>
@@ -76,25 +78,22 @@ dayjs.extend(localizedFormat);
 
   {
     (page.url.prev || page.url.next) && (
-      <div
-        class="flex justify-between"
-        style="border-top: 1px solid var(--color-divider); margin-top: calc(var(--space-8) * 1.4); padding-top: var(--space-6);"
-      >
+      <nav class="i-pager" aria-label="Pages">
         {page.url.prev ? (
           <a href={page.url.prev} class="i-btn i-btn-secondary">
-            ← Recent posts
+            Newer posts
           </a>
         ) : (
           <span />
         )}
         {page.url.next ? (
           <a href={page.url.next} class="i-btn i-btn-secondary">
-            Older posts →
+            Older posts
           </a>
         ) : (
           <span />
         )}
-      </div>
+      </nav>
     )
   }
 </BaseLayout>

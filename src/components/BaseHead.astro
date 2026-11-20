@@ -2,6 +2,7 @@
 // Import the global.css file here so that it is included on
 // all pages through the use of the <BaseHead /> component.
 import '../styles/global.css';
+import { Font } from 'astro:assets';
 import { SITE_TITLE, CONTACT_EMAIL, LINKEDIN_URL, GITHUB_URL } from '../config';
 
 export interface Props {
@@ -34,13 +35,10 @@ const person = {
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <meta name="generator" content={Astro.generator} />
 
-<!-- Type: Barlow Condensed headings over Barlow body -->
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link
-	href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&display=swap"
-	rel="stylesheet"
-/>
+<!-- Type: Barlow Condensed headings over Barlow body, self-hosted (see astro.config.mjs).
+     Only the two faces on the first screen are preloaded. -->
+<Font cssVariable="--font-barlow-condensed" preload={[{ weight: 600 }]} />
+<Font cssVariable="--font-barlow" preload={[{ weight: 400 }]} />
 
 <link rel="alternate" type="application/rss+xml" title={title} href={new URL('rss.xml', Astro.site)} />
 <link rel="canonical" href={Astro.url} />

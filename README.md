@@ -19,6 +19,7 @@ pnpm build    # static site in dist/
 - `src/pages/` — home, projects, blog, CV
 - `src/content/blog/` — posts in Markdown; `draft: true` keeps a post out of the build
 - `src/styles/industry.css` — the design system: tokens and components
+- `src/assets/` — images (optimised by Astro at build) and the self-hosted fonts
 - `src/config.ts` — site title, contact email, LinkedIn and GitHub links
 
 ## CV PDF

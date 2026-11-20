@@ -12,3 +12,12 @@ export const CONTACT_EMAIL = 'eleutherius69@gmail.com';
 export const LINKEDIN_URL = 'https://www.linkedin.com/in/eleutherius/';
 export const GITHUB_URL = 'https://github.com/eleutherius';
 export const CV_PDF = '/Oleksandr-Liakhov-CV.pdf';
+export const REPO_URL = 'https://github.com/eleutherius/eleutherius.github.io';
+
+// The four destinations, in one place for the sidebar and the narrow-screen header.
+export const NAV = [
+  { id: 'home', href: '/', label: 'Home' },
+  { id: 'projects', href: '/projects', label: 'Projects' },
+  { id: 'blog', href: '/blog/', label: 'Blog' },
+  { id: 'cv', href: '/cv', label: 'CV' },
+] as const;

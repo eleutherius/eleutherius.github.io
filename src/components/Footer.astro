@@ -1,10 +1,61 @@
 ---
-const today = new Date();
+import dayjs from "dayjs";
+import { BUILD_SHA, BUILD_DATE } from "../lib/build";
+import { GITHUB_URL, LINKEDIN_URL, REPO_URL } from "../config";
+
+const year = BUILD_DATE.getFullYear();
+const short = BUILD_SHA.slice(0, 7);
 ---
 
-<footer
-  class="mt-16 py-6 flex justify-center shrink-0 no-print"
-  style="border-top: 1px solid var(--color-divider); font-size: 13px; color: var(--color-neutral-700);"
->
-  &copy; {today.getFullYear()} Oleksandr Liakhov
+<footer class="site-footer no-print">
+  <div class="footer-inner">
+    <span>&copy; {year} Oleksandr Liakhov</span>
+    <nav class="footer-links" aria-label="Elsewhere">
+      <a href={GITHUB_URL}>GitHub</a>
+      <a href={LINKEDIN_URL}>LinkedIn</a>
+      <a href="/rss.xml">RSS</a>
+    </nav>
+    {
+      short && (
+        <span class="footer-rev">
+          Revision <a href={`${REPO_URL}/commit/${BUILD_SHA}`}>{short}</a>, built {dayjs(BUILD_DATE).format("D MMM YYYY")}
+        </span>
+      )
+    }
+  </div>
 </footer>
+
+<style>
+  .site-footer {
+    margin-top: var(--space-section);
+    border-top: 1px solid var(--color-divider);
+  }
+  .footer-inner {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: var(--space-6);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-2) var(--space-6);
+    font-size: var(--text-label);
+    color: var(--color-neutral-700);
+  }
+  @media (min-width: 1024px) {
+    .footer-inner {
+      padding: var(--space-6) var(--space-12);
+    }
+  }
+  .footer-links {
+    display: flex;
+    gap: var(--space-4);
+  }
+  .footer-links a,
+  .footer-rev a {
+    color: inherit;
+  }
+  .footer-rev {
+    font-variant-numeric: tabular-nums;
+  }
+</style>
