@@ -15,7 +15,7 @@
     "@astrojs/mdx": "^7.0.7",
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.3",
-    "astro": "^7.2.4",
+    "astro": "^7.4.7",
     "daisyui": "^4.12.24",
     "dayjs": "^1.11.20",
     "qrcode": "^1.5.4",
