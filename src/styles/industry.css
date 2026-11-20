@@ -62,9 +62,13 @@ body {
 
 /* Links inside body copy must read as links. Tailwind's preflight strips the
    browser default, so without this an inline link is indistinguishable from
-   the sentence around it. */
-a { color: var(--color-accent-700); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
-a:hover { color: var(--color-accent); text-decoration-thickness: 2px; }
+   the sentence around it.
+   :where() keeps these at zero specificity on the element part, so a component
+   class (.i-btn-primary, .i-card) always wins. As plain `a:hover` this rule
+   beat .i-btn-primary and painted the button's label in the button's own
+   colour on hover — the "Hire me" button went blank. */
+:where(a) { color: var(--color-accent-700); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+:where(a):hover { color: var(--color-accent-800); text-decoration-thickness: 2px; }
 a.i-btn, a.i-tag, a.i-card, .i-side-nav a, .i-kicker a { text-decoration: none; }
 
 /* — headings —
@@ -85,7 +89,7 @@ a.i-btn, a.i-tag, a.i-card, .i-side-nav a, .i-kicker a { text-decoration: none; 
   font-size: 13px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--color-neutral-600);
+  color: var(--color-neutral-700);
 }
 @media (max-width: 640px) {
   .i-h1 { font-size: 34px; }
@@ -103,7 +107,7 @@ a.i-btn, a.i-tag, a.i-card, .i-side-nav a, .i-kicker a { text-decoration: none; 
   font-size: 12.5px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--color-neutral-600);
+  color: var(--color-neutral-700);
 }
 .i-meta > * + *::before {
   content: "";
@@ -117,26 +121,26 @@ a.i-btn, a.i-tag, a.i-card, .i-side-nav a, .i-kicker a { text-decoration: none; 
 
 /* — blueprint frame: every card and figure is a square hairline line drawing
      with registration marks at its corners — */
-.blueprint {
+.blueprint, .i-card {
   position: relative;
   border: 1px solid var(--color-divider);
   border-radius: 0;
 }
 .blueprint.duotone { overflow: visible; }
-.blueprint > .corner {
+:is(.blueprint, .i-card) > .corner {
   position: absolute;
   width: 11px;
   height: 11px;
   color: color-mix(in srgb, var(--color-text) 55%, transparent);
 }
-.blueprint > .corner::before,
-.blueprint > .corner::after { content: ""; position: absolute; background: currentColor; }
-.blueprint > .corner::before { left: 5px; top: 0; width: 1px; height: 100%; }
-.blueprint > .corner::after { top: 5px; left: 0; width: 100%; height: 1px; }
-.blueprint > .corner.tl { top: -6px; left: -6px; }
-.blueprint > .corner.tr { top: -6px; right: -6px; }
-.blueprint > .corner.bl { bottom: -6px; left: -6px; }
-.blueprint > .corner.br { bottom: -6px; right: -6px; }
+:is(.blueprint, .i-card) > .corner::before,
+:is(.blueprint, .i-card) > .corner::after { content: ""; position: absolute; background: currentColor; }
+:is(.blueprint, .i-card) > .corner::before { left: 5px; top: 0; width: 1px; height: 100%; }
+:is(.blueprint, .i-card) > .corner::after { top: 5px; left: 0; width: 100%; height: 1px; }
+:is(.blueprint, .i-card) > .corner.tl { top: -6px; left: -6px; }
+:is(.blueprint, .i-card) > .corner.tr { top: -6px; right: -6px; }
+:is(.blueprint, .i-card) > .corner.bl { bottom: -6px; left: -6px; }
+:is(.blueprint, .i-card) > .corner.br { bottom: -6px; right: -6px; }
 
 /* — images —
  *
@@ -237,9 +241,9 @@ a.i-card:hover .i-open { transform: translateX(4px); }
   border-radius: 0;
   padding: var(--space-3) calc(var(--space-4) * 1.3);
 }
-.i-btn-primary { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-bg); }
-.i-btn-primary:hover { background: var(--color-accent-600); border-color: var(--color-accent-600); }
-.i-btn-primary:active { background: var(--color-accent-700); }
+.i-btn-primary { background: var(--color-accent-700); border-color: var(--color-accent-700); color: var(--color-bg); }
+.i-btn-primary:hover { background: var(--color-accent-800); border-color: var(--color-accent-800); color: var(--color-bg); }
+.i-btn-primary:active { background: var(--color-accent-900); }
 .i-btn-secondary:hover { background: color-mix(in srgb, var(--color-text) 7%, transparent); }
 .i-btn-secondary:active { background: color-mix(in srgb, var(--color-text) 14%, transparent); }
 .i-btn:disabled, .i-btn[aria-disabled="true"] { opacity: 0.4; pointer-events: none; }
@@ -258,7 +262,7 @@ a.i-card:hover .i-open { transform: translateX(4px); }
 }
 .i-tag-accent { background: var(--color-accent-100); color: var(--color-accent-800); }
 .i-tag-neutral { background: var(--color-neutral-100); color: var(--color-neutral-800); }
-.i-tag-outline { border: 1px solid var(--color-accent); color: var(--color-accent); }
+.i-tag-outline { border: 1px solid var(--color-accent); color: var(--color-accent-700); }
 a.i-tag-outline:hover { background: color-mix(in srgb, var(--color-accent) 10%, transparent); }
 
 /* — the sidebar — */
@@ -290,8 +294,15 @@ a.i-tag-outline:hover { background: color-mix(in srgb, var(--color-accent) 10%, 
 }
 .i-side-nav a[aria-current="page"]::before { background: var(--color-accent); }
 
-/* — print: the QR block on the CV is small on screen and full-size on paper — */
+/* — print: the CV is printed (and its PDF is generated) from the page itself,
+     so the site's chrome — sidebar, mobile bar, footer, buttons — stays off paper — */
 @media print {
+  :root { --color-bg: #fff; }
+  html[data-theme], body { background: #fff; }
+  .no-print { display: none !important; }
+  main { padding: 0 !important; max-width: none !important; }
+  a { color: inherit; text-decoration: none; }
+
   .qr-block { break-inside: avoid; padding: 0 !important; border-color: transparent; }
   .qr-block > div { width: 150px !important; height: 150px !important; }
   .qr-block .corner { display: none; }
@@ -300,7 +311,7 @@ a.i-tag-outline:hover { background: color-mix(in srgb, var(--color-accent) 10%, 
 .prose {
   --tw-prose-body: var(--color-text);
   --tw-prose-headings: var(--color-text);
-  --tw-prose-links: var(--color-accent);
+  --tw-prose-links: var(--color-accent-700);
   --tw-prose-bold: var(--color-text);
   --tw-prose-quotes: var(--color-neutral-800);
   --tw-prose-code: var(--color-text);

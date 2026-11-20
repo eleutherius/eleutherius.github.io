@@ -8,14 +8,17 @@ import localizedFormat from "dayjs/plugin/localizedFormat";
 
 export async function getStaticPaths({ paginate }) {
   const all_posts = await getPublishedPosts();
-  const all_tags = [...new Set(all_posts.flatMap((post) => post.data.tags || []))];
+  // Sorted once, up front. This used to call all_tags.sort() inside the loop
+  // below: sorting the array mid-iteration made flatMap visit one tag twice and
+  // skip another, so /blog/tag/btrepl was never generated and its link 404'd.
+  const all_tags = [...new Set(all_posts.flatMap((post) => post.data.tags || []))].sort();
 
   return all_tags.flatMap((tag) => {
     const filtred_posts = all_posts.filter((post) => post.data.tags?.includes(tag));
     return paginate(filtred_posts, {
       params: { tag },
       pageSize: 10,
-      props: { tags: all_tags.sort() },
+      props: { tags: all_tags },
     });
   });
 }

@@ -1,144 +1,396 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import TimeLineElement from "../components/cv/TimeLine.astro";
+import { CONTACT_EMAIL, LINKEDIN_URL, GITHUB_URL, CV_PDF } from "../config";
+
+// The page a recruiter opens second, and the source of the PDF they attach to
+// the application. It is laid out to read the same on screen and on paper:
+// name and contacts first, dates in their own column, nothing that only works
+// with a mouse. Content is data so every entry is marked up identically.
+
+const experience = [
+  {
+    role: "DevOps Engineer / Senior Platform Engineer",
+    company: "JCI",
+    period: "Dec 2021 — Present",
+    points: [
+      "Designed and implemented reusable infrastructure modules using Terraform and Ansible, enabling faster environment provisioning across teams.",
+      "Backend development (GraphQL) for internal DevOps tools.",
+      "Built standardized CI/CD pipelines, reducing deployment time and minimizing manual errors across multiple teams.",
+      "Developed automation scripts in Python, Go, and Bash for Linux environments (CentOS, Debian, AlmaLinux).",
+      "Managed HashiCorp Vault for secrets management and security compliance.",
+      "Maintained Linux servers, troubleshooting production incidents and optimizing performance.",
+      "Designed and maintained Kubernetes-based platform using GitOps (ArgoCD), enabling self-service deployments.",
+      "Implemented observability stack (Prometheus, Grafana, Zabbix) for monitoring and alerting.",
+    ],
+    achievements: [
+      "Migrated legacy internal product from Django 1.8 to modern Django + GraphQL architecture.",
+      "Successfully migrated legacy redundancy mechanism to restore nodes using ZFS restore mechanisms.",
+      "Improved system reliability by implementing monitoring and log forwarding best practices.",
+      "Implemented internal ACME server for automated certificate management across infrastructure.",
+    ],
+  },
+  {
+    role: "QA Performance Engineer",
+    company: "JCI",
+    period: "Jul 2019 — Dec 2021",
+    points: [
+      "Conducted load and performance testing for REST APIs and large-scale applications.",
+      "Used Locust and custom Python frameworks to simulate traffic and monitor system bottlenecks.",
+    ],
+    achievements: ["Identified key performance issues that improved system throughput by 25%."],
+  },
+  {
+    role: "QA Engineer",
+    company: "JCI",
+    period: "Dec 2018 — Jul 2019",
+    points: [
+      "Tested IoT server applications for security devices.",
+      "Wrote HLD documentation and maintained test cases in TestRail.",
+      "Automated tests with Python; integrated with Redis, Nginx, MySQL.",
+    ],
+  },
+  {
+    role: "Linux Administrator / DevOps",
+    company: "Softevol",
+    period: "Apr 2018 — Dec 2019",
+    points: [
+      "Managed Linux servers and virtualization (VMware ESXi, vSphere, vCenter).",
+      "Configured SSL (Comodo, Let's Encrypt), MySQL (MariaDB, Percona cluster).",
+      "Optimized websites for Google PageSpeed performance.",
+    ],
+  },
+  {
+    role: "Network Engineer",
+    company: "IC-LINE UA",
+    period: "Jun 2014 — Apr 2018",
+    points: [
+      "Configured and maintained network equipment (Cisco, Huawei, ZTE, BDCOM).",
+      "Designed and deployed PON networks, including CWDM/DWDM solutions.",
+      "Implemented monitoring with Zabbix and Userside.",
+    ],
+  },
+];
+
+const education = [
+  {
+    role: "Specialist's Academic Level — Radio Electronic Devices and Facilities",
+    company: "National Technical University of Ukraine «Kyiv Polytechnic Institute», Kyiv, Ukraine",
+    period: "2016",
+  },
+];
+
+const skills = [
+  "Kubernetes",
+  "ArgoCD",
+  "Terraform",
+  "Ansible",
+  "AWS (S3, EC2, IAM)",
+  "Docker",
+  "Jenkins",
+  "GitLab CI",
+  "Python",
+  "Go",
+  "Bash",
+  "Linux",
+  "Prometheus",
+  "Grafana",
+  "Zabbix",
+  "HashiCorp Vault",
+  "GraphQL",
+  "Django",
+  "Nginx",
+  "Okta",
+  "Cisco CLI",
+  "ACME / Certbot",
+];
+
+const languages = [
+  { name: "Ukrainian", level: "Fluent" },
+  { name: "Russian", level: "Fluent" },
+  { name: "English", level: "Upper-Intermediate" },
+];
+
+const linkedinShown = LINKEDIN_URL.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "");
+const githubShown = GITHUB_URL.replace(/^https?:\/\//, "");
 ---
 
-<BaseLayout title="Resume" sideBarActiveItemID="cv">
-  <div class="mb-5">
-    <div class="text-3xl w-full font-bold">Profile</div>
-  </div>
+<BaseLayout title="CV — Oleksandr Liakhov" sideBarActiveItemID="cv">
+  <article class="cv">
+    <header class="cv-head">
+      <div style="max-width: 62ch;">
+        <h1 class="i-h1">Oleksandr Liakhov</h1>
+        <p class="cv-role">Senior Platform / DevOps Engineer</p>
+        <ul class="cv-contacts">
+          <li><a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a></li>
+          <li><a href={LINKEDIN_URL}>{linkedinShown}</a></li>
+          <li><a href={GITHUB_URL}>{githubShown}</a></li>
+          <li>Ho Chi Minh City, UTC+7</li>
+          <li>Open to relocation</li>
+        </ul>
+      </div>
+      <div class="flex flex-wrap gap-3 no-print">
+        <a href={CV_PDF} class="i-btn i-btn-primary" download>Download PDF</a>
+        <a href={`mailto:${CONTACT_EMAIL}`} class="i-btn i-btn-secondary">Email me</a>
+      </div>
+    </header>
 
-  <div class="mb-10 text-justify">
-    Platform-focused DevOps Engineer with 6+ years of experience designing and automating scalable
-    infrastructure and internal developer platforms. Specialized in building self-service systems,
-    improving developer experience, and reducing operational overhead through Infrastructure as Code,
-    GitOps, and automation. Strong background in Kubernetes, AWS, CI/CD, and system reliability.
-    My goal is to automate complex processes and make life easier.
-  </div>
+    <section class="cv-section">
+      <h2 class="i-h2">Profile</h2>
+      <p class="cv-lede">
+        Platform-focused DevOps Engineer with 6+ years of experience designing and automating scalable infrastructure
+        and internal developer platforms. Specialized in building self-service systems, improving developer experience,
+        and reducing operational overhead through Infrastructure as Code, GitOps, and automation. Strong background in
+        Kubernetes, AWS, CI/CD, and system reliability. My goal is to automate complex processes and make life easier.
+      </p>
+    </section>
 
-  <div class="mb-5">
-    <div class="text-3xl w-full font-bold">Education</div>
-  </div>
+    <section class="cv-section">
+      <h2 class="i-h2">Experience</h2>
+      {
+        experience.map((job) => (
+          <div class="cv-entry">
+            <div class="i-meta cv-period">{job.period}</div>
+            <div>
+              <h3 class="i-h4">{job.role}</h3>
+              <div class="cv-org">{job.company}</div>
+              <ul class="cv-list">
+                {job.points.map((p) => (
+                  <li>{p}</li>
+                ))}
+              </ul>
+              {job.achievements && (
+                <>
+                  <p class="cv-sub">Achievements</p>
+                  <ul class="cv-list">
+                    {job.achievements.map((a) => (
+                      <li>{a}</li>
+                    ))}
+                  </ul>
+                </>
+              )}
+            </div>
+          </div>
+        ))
+      }
+    </section>
 
-  <div class="time-line-container grid gap-4 mb-10">
-    <TimeLineElement
-      title="Specialist's Academic Level — Radio Electronic Devices and Facilities"
-      subtitle="2016 at National Technical University of Ukraine «Kyiv Polytechnic Institute», Kyiv, Ukraine"
-    />
-  </div>
+    <section class="cv-section">
+      <h2 class="i-h2">Education</h2>
+      {
+        education.map((e) => (
+          <div class="cv-entry">
+            <div class="i-meta cv-period">{e.period}</div>
+            <div>
+              <h3 class="i-h4">{e.role}</h3>
+              <div class="cv-org">{e.company}</div>
+            </div>
+          </div>
+        ))
+      }
+    </section>
 
-  <div class="mb-5">
-    <div class="text-3xl w-full font-bold">Experience</div>
-  </div>
-
-  <div class="time-line-container mb-10">
-    <TimeLineElement
-      title="DevOps Engineer / Senior Platform Engineer"
-      subtitle="December 2021 — Present at JCI"
-    >
-      <ul class="list-disc mx-6 mb-2 grid gap-1">
-        <li>Designed and implemented reusable infrastructure modules using Terraform and Ansible, enabling faster environment provisioning across teams.</li>
-        <li>Backend development (GraphQL) for internal DevOps tools.</li>
-        <li>Built standardized CI/CD pipelines, reducing deployment time and minimizing manual errors across multiple teams.</li>
-        <li>Developed automation scripts in Python, Go, and Bash for Linux environments (CentOS, Debian, AlmaLinux).</li>
-        <li>Managed HashiCorp Vault for secrets management and security compliance.</li>
-        <li>Maintained Linux servers, troubleshooting production incidents and optimizing performance.</li>
-        <li>Designed and maintained Kubernetes-based platform using GitOps (ArgoCD), enabling self-service deployments.</li>
-        <li>Implemented observability stack (Prometheus, Grafana, Zabbix) for monitoring and alerting.</li>
+    <section class="cv-section">
+      <h2 class="i-h2">Skills</h2>
+      <ul class="cv-skills">
+        {skills.map((s) => <li>{s}</li>)}
       </ul>
-      <p class="font-semibold mt-2 mb-1">Achievements:</p>
-      <ul class="list-disc mx-6 grid gap-1">
-        <li>Migrated legacy internal product from Django 1.8 to modern Django + GraphQL architecture.</li>
-        <li>Successfully migrated legacy redundancy mechanism to restore nodes using ZFS restore mechanisms.</li>
-        <li>Improved system reliability by implementing monitoring and log forwarding best practices.</li>
-        <li>Implemented internal ACME server for automated certificate management across infrastructure.</li>
+    </section>
+
+    <section class="cv-section">
+      <h2 class="i-h2">Languages</h2>
+      <ul class="cv-langs">
+        {
+          languages.map((l) => (
+            <li>
+              <span>{l.name}</span>
+              <span class="cv-org">{l.level}</span>
+            </li>
+          ))
+        }
       </ul>
-    </TimeLineElement>
-
-    <TimeLineElement
-      title="QA Performance Engineer"
-      subtitle="July 2019 — December 2021 at JCI"
-    >
-      <ul class="list-disc mx-6 mb-2 grid gap-1">
-        <li>Conducted load and performance testing for REST APIs and large-scale applications.</li>
-        <li>Used Locust and custom Python frameworks to simulate traffic and monitor system bottlenecks.</li>
-      </ul>
-      <p class="font-semibold mt-2 mb-1">Achievements:</p>
-      <ul class="list-disc mx-6 grid gap-1">
-        <li>Identified key performance issues that improved system throughput by 25%.</li>
-      </ul>
-    </TimeLineElement>
-
-    <TimeLineElement
-      title="QA Engineer"
-      subtitle="December 2018 — July 2019 at JCI"
-    >
-      <ul class="list-disc mx-6 grid gap-1">
-        <li>Tested IoT server applications for security devices.</li>
-        <li>Wrote HLD documentation and maintained test cases in TestRail.</li>
-        <li>Automated tests with Python; integrated with Redis, Nginx, MySQL.</li>
-      </ul>
-    </TimeLineElement>
-
-    <TimeLineElement
-      title="Linux Administrator / DevOps"
-      subtitle="April 2018 — December 2019 at Softevol"
-    >
-      <ul class="list-disc mx-6 grid gap-1">
-        <li>Managed Linux servers and virtualization (VMware ESXi, vSphere, vCenter).</li>
-        <li>Configured SSL (Comodo, Let's Encrypt), MySQL (MariaDB, Percona cluster).</li>
-        <li>Optimized websites for Google PageSpeed performance.</li>
-      </ul>
-    </TimeLineElement>
-
-    <TimeLineElement
-      title="Network Engineer"
-      subtitle="June 2014 — April 2018 at IC-LINE UA"
-    >
-      <ul class="list-disc mx-6 grid gap-1">
-        <li>Configured and maintained network equipment (Cisco, Huawei, ZTE, BDCOM).</li>
-        <li>Designed and deployed PON networks, including CWDM/DWDM solutions.</li>
-        <li>Implemented monitoring with Zabbix and Userside.</li>
-      </ul>
-    </TimeLineElement>
-  </div>
-
-  <div class="mb-5">
-    <div class="text-3xl w-full font-bold">Skills</div>
-  </div>
-
-  <ul class="list-disc md:columns-3 columns-2 mx-6 mb-10">
-    <li>Python</li>
-    <li>Go</li>
-    <li>Bash</li>
-    <li>Terraform</li>
-    <li>Ansible</li>
-    <li>Kubernetes</li>
-    <li>ArgoCD</li>
-    <li>Jenkins</li>
-    <li>GitLab CI</li>
-    <li>Linux</li>
-    <li>Prometheus</li>
-    <li>Grafana</li>
-    <li>Zabbix</li>
-    <li>HashiCorp Vault</li>
-    <li>GraphQL</li>
-    <li>Django</li>
-    <li>Nginx</li>
-    <li>AWS (S3, EC2, IAM)</li>
-    <li>Docker</li>
-    <li>Okta</li>
-    <li>Cisco CLI</li>
-    <li>ACME / Certbot</li>
-  </ul>
-
-  <div class="mb-5">
-    <div class="text-3xl w-full font-bold">Languages</div>
-  </div>
-
-  <ul class="list-disc mx-6 mb-10">
-    <li>Ukrainian — Fluent</li>
-    <li>Russian — Fluent</li>
-    <li>English — Upper-Intermediate</li>
-  </ul>
+    </section>
+  </article>
 </BaseLayout>
+
+<style>
+  .cv-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-6);
+    padding-bottom: var(--space-6);
+    border-bottom: 1px solid var(--color-divider);
+  }
+  .cv-role {
+    margin: var(--space-2) 0 var(--space-4);
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+  /* Body face, not the condensed meta style: email addresses and URLs have
+     to be read and copied exactly, on screen and on paper. */
+  .cv-contacts {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-6);
+    font-size: 15px;
+    color: var(--color-neutral-800);
+  }
+
+  .cv-section {
+    margin-top: calc(var(--space-8) * 1.4);
+  }
+  .cv-section > .i-h2 {
+    padding-bottom: var(--space-4);
+    margin-bottom: var(--space-6);
+    border-bottom: 1px solid var(--color-divider);
+  }
+  .cv-lede {
+    margin: 0;
+    max-width: 68ch;
+    font-size: 17px;
+    line-height: 1.65;
+    text-wrap: pretty;
+  }
+
+  /* Dates in their own column on wide screens and on paper, above the role on
+     a phone. The column is what lets a reader run down the career in one look. */
+  .cv-entry {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-2) var(--space-8);
+    padding: var(--space-6) 0;
+  }
+  .cv-entry + .cv-entry {
+    border-top: 1px solid var(--color-divider);
+  }
+  .cv-section > .cv-entry:first-of-type {
+    padding-top: 0;
+  }
+  @media (min-width: 768px) {
+    .cv-entry {
+      grid-template-columns: 150px minmax(0, 1fr);
+    }
+  }
+  /* Paper: white, tighter vertical rhythm, and breaks allowed inside a long
+     job (keeping it whole left most of page one empty) but never between a
+     heading and what follows it, or in the middle of a bullet.
+     The .cv prefix matters: the CSS minifier may emit the base rules after this
+     block, so these need the extra specificity rather than source order. */
+  @media print {
+    .cv .cv-entry {
+      grid-template-columns: 120px minmax(0, 1fr);
+      padding: var(--space-4) 0;
+    }
+    .cv .cv-section {
+      margin-top: var(--space-6);
+    }
+    .cv .cv-section > .i-h2 {
+      font-size: 24px;
+      padding-bottom: var(--space-2);
+      margin-bottom: var(--space-3);
+      break-after: avoid;
+    }
+    .cv .cv-entry {
+      padding: var(--space-3) 0;
+    }
+    .cv .cv-skills li {
+      padding-bottom: 2px;
+    }
+    .cv .cv-entry .i-h4,
+    .cv .cv-sub {
+      break-after: avoid;
+    }
+    .cv .cv-list li {
+      break-inside: avoid;
+    }
+    .cv .cv-lede {
+      max-width: none;
+      font-size: 14.5px;
+      line-height: 1.55;
+    }
+    .cv .cv-head {
+      padding-bottom: var(--space-4);
+    }
+    .cv .cv-list,
+    .cv .cv-skills,
+    .cv .cv-langs {
+      font-size: 13.5px;
+      line-height: 1.45;
+    }
+    .cv .cv-list {
+      gap: 3px;
+      margin-top: var(--space-2);
+    }
+  }
+  .cv-period {
+    align-self: start;
+    padding-top: 4px;
+  }
+  .cv-org {
+    margin-top: 2px;
+    font-size: 15px;
+    color: var(--color-neutral-700);
+  }
+  .cv-sub {
+    margin: var(--space-4) 0 0;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 16px;
+  }
+  .cv-list {
+    margin: var(--space-3) 0 0;
+    padding-left: 1.1em;
+    max-width: 72ch;
+    display: grid;
+    gap: var(--space-2);
+    font-size: 15.5px;
+    line-height: 1.55;
+    list-style: square;
+  }
+  .cv-list li::marker {
+    color: var(--color-accent);
+  }
+
+  .cv-skills {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-2) var(--space-6);
+    font-size: 15.5px;
+  }
+  @media (min-width: 768px) {
+    .cv-skills {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+  @media print {
+    .cv .cv-skills {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+  .cv-skills li {
+    padding-bottom: var(--space-2);
+    border-bottom: 1px solid var(--color-divider);
+  }
+
+  .cv-langs {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4) var(--space-8);
+    font-size: 15.5px;
+  }
+  .cv-langs li {
+    display: flex;
+    flex-direction: column;
+  }
+</style>

@@ -5,3 +5,10 @@ export const SITE_TITLE = 'Oleksandr Liakhov';
 export const SITE_DESCRIPTION = 'DevOps and Platform Engineer focused on reliable infrastructure, cloud platforms, automation, and developer experience.';
 export const GENERATE_SLUG_FROM_TITLE = true
 export const TRANSITION_API = true
+
+// Contact details live here so every "Get in touch" button points at the same
+// real address. Three of them used to say hello@example.com.
+export const CONTACT_EMAIL = 'eleutherius69@gmail.com';
+export const LINKEDIN_URL = 'https://www.linkedin.com/in/eleutherius/';
+export const GITHUB_URL = 'https://github.com/eleutherius';
+export const CV_PDF = '/Oleksandr-Liakhov-CV.pdf';

@@ -51,6 +51,7 @@ const projects = [
 ];
 
 import { Image } from "astro:assets";
+import { CONTACT_EMAIL } from "../config";
 ---
 
 <BaseLayout title="Projects" sideBarActiveItemID="projects">
@@ -137,7 +138,7 @@ import { Image } from "astro:assets";
       </p>
     </div>
     <a
-      href="mailto:hello@example.com"
+      href={`mailto:${CONTACT_EMAIL}`}
       class="i-btn"
       style="background: var(--color-bg); border-color: var(--color-bg); color: var(--color-accent-900);"
     >

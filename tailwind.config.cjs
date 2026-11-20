@@ -2,7 +2,7 @@
 
 // One theme, not thirty. The blog and home pages are styled by
 // src/styles/industry.css; this DaisyUI theme exists so the pages still on
-// DaisyUI classes (cv, projects, 404, store) inherit the same steel palette
+// DaisyUI classes (projects, 404, the layout drawer) inherit the same steel palette
 // instead of looking like a different website. Delete the daisyui plugin once
 // those pages are ported too.
 

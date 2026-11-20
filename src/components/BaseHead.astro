@@ -2,6 +2,7 @@
 // Import the global.css file here so that it is included on
 // all pages through the use of the <BaseHead /> component.
 import '../styles/global.css';
+import { SITE_TITLE, CONTACT_EMAIL, LINKEDIN_URL, GITHUB_URL } from '../config';
 
 export interface Props {
 	title: string;
@@ -10,7 +11,21 @@ export interface Props {
 	ogType?: string;
 }
 
-const { title, description, image = '/social_img.webp', ogType = 'website' } = Astro.props;
+// The default share image is our own card. It used to be the Astrofy template's
+// screenshot (someone else's name and face) — and WebP, which LinkedIn won't show.
+const { title, description, image = '/og-default.jpg', ogType = 'website' } = Astro.props;
+
+// Structured data so a search for the name finds a person with a job title,
+// not just a page title.
+const person = {
+	'@context': 'https://schema.org',
+	'@type': 'Person',
+	name: SITE_TITLE,
+	jobTitle: 'Senior Platform / DevOps Engineer',
+	url: Astro.site?.href,
+	email: `mailto:${CONTACT_EMAIL}`,
+	sameAs: [LINKEDIN_URL, GITHUB_URL],
+};
 ---
 
 <!-- Global Metadata -->
@@ -37,6 +52,7 @@ const { title, description, image = '/social_img.webp', ogType = 'website' } = A
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content={ogType} />
+<meta property="og:site_name" content={SITE_TITLE} />
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
@@ -48,3 +64,5 @@ const { title, description, image = '/social_img.webp', ogType = 'website' } = A
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(image, Astro.url)} />
+
+<script type="application/ld+json" set:html={JSON.stringify(person)} />

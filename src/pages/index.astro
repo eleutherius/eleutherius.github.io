@@ -5,17 +5,20 @@ import { getPublishedPosts, postUrl } from "../lib/posts";
 import { readingTime } from "../lib/readingTime";
 import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
+import { CONTACT_EMAIL, LINKEDIN_URL } from "../config";
 
 dayjs.extend(localizedFormat);
 const last_posts = (await getPublishedPosts()).slice(0, 2);
 
-// The spec plate beside the hero. Facts, not adjectives — and it gives the
-// right-hand column something to hold, which a single text column never does.
+// The recruiter card beside the hero. A recruiter scanning this page has three
+// questions: what is the role, does location/time zone/relocation fit, and how
+// do I reach him. Every row answers one of them, in the order they're asked.
 const spec = [
-  { label: "Focus", value: "Kubernetes platforms · IaC · developer experience" },
-  { label: "Ways to work", value: "Full-time roles · consulting engagements" },
-  { label: "Based", value: "Ukraine · remote-first, CET hours" },
-  { label: "Reply time", value: "Within a day, or a plain no" },
+  { label: "Role", value: "Senior Platform / DevOps Engineer" },
+  { label: "Experience", value: "In IT since 2014, 7+ years at Johnson Controls" },
+  { label: "Core stack", value: "Kubernetes, ArgoCD, Terraform, Ansible, AWS, GitLab CI" },
+  { label: "Based", value: "Ho Chi Minh City, Vietnam (UTC+7). Open to relocating anywhere." },
+  { label: "Availability", value: "Open to full-time roles and contracts" },
 ];
 
 // Recruiters scan for keywords and shouldn't have to open the CV to find them.
@@ -31,28 +34,18 @@ const stack = [
   <!-- ─────────── hero: two columns, so the field is actually used ─────────── -->
   <section class="grid lg:grid-cols-[minmax(0,1.45fr)_minmax(0,1fr)] gap-8 lg:gap-10 items-start">
     <div>
-      <div
-        class="flex items-center gap-3 flex-wrap"
-        style="font-family: var(--font-heading); font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent-700); margin-bottom: var(--space-6);"
-      >
-        <span style="width: 22px; height: 1px; background: var(--color-accent); display: block;"></span>
-        <span>Platform &amp; DevOps engineering</span>
-        <span style="width: 1px; height: 12px; background: var(--color-divider); display: block;"></span>
-        <span>Open to new work</span>
-      </div>
-
       <h1 class="i-h1" style="margin-bottom: var(--space-6);">
         I make infrastructure boring, so product teams can ship fast.
       </h1>
 
       <p style="margin: 0 0 var(--space-8); font-size: 18px; line-height: 1.62; max-width: 54ch; text-wrap: pretty;">
-        I'm Oleksandr — a platform engineer who builds the paved road: Kubernetes platforms, Terraform-managed cloud,
+        I'm Oleksandr — a senior platform engineer who builds the paved road: Kubernetes platforms, Terraform-managed cloud,
         CI/CD developers don't fight, and observability that catches trouble before users do. I also ship small products
         of my own.
       </p>
 
       <div class="flex flex-wrap gap-3">
-        <a href="mailto:hello@example.com" class="i-btn i-btn-primary">Hire me for platform work</a>
+        <a href={`mailto:${CONTACT_EMAIL}`} class="i-btn i-btn-primary">Hire me for platform work</a>
         <a href="/cv" class="i-btn i-btn-secondary">Read the CV</a>
       </div>
     </div>
@@ -70,6 +63,13 @@ const stack = [
           </div>
         ))
       }
+      <div style="padding: var(--space-4) var(--space-6); border-top: 1px solid var(--color-divider);">
+        <dt class="i-kicker" style="font-size: 11.5px; margin-bottom: var(--space-2);">Contact</dt>
+        <dd class="flex flex-wrap gap-x-5 gap-y-1" style="margin: 0; font-size: 15px; line-height: 1.5;">
+          <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+          <a href={LINKEDIN_URL} target="_blank" rel="noopener">LinkedIn</a>
+        </dd>
+      </div>
       <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
     </dl>
   </section>
@@ -222,7 +222,7 @@ const stack = [
       </p>
     </div>
     <a
-      href="mailto:hello@example.com"
+      href={`mailto:${CONTACT_EMAIL}`}
       class="i-btn"
       style="background: var(--color-bg); border-color: var(--color-bg); color: var(--color-accent-900); padding: var(--space-4) var(--space-8);"
     >
