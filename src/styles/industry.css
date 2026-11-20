@@ -67,6 +67,14 @@
   --space-section: clamp(3.5rem, 2.5rem + 3vw, 5rem);
 }
 
+/* Page-to-page transition without JavaScript: the browser cross-fades
+   same-origin navigations (Chrome, Edge, Safari); elsewhere it just navigates.
+   This replaced Astro's client-side router, which swapped pages without a
+   real load — and so without a page view for the visit counter. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+}
+
 html {
   scrollbar-color: var(--color-neutral-400) var(--color-bg);
   -webkit-text-size-adjust: 100%;

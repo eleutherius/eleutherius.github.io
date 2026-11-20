@@ -3,9 +3,8 @@ import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import SideBar from "../components/SideBar.astro";
-import { ClientRouter } from "astro:transitions";
 
-import { SITE_TITLE, SITE_DESCRIPTION, TRANSITION_API } from "../config";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../config";
 
 const { image, title = SITE_TITLE, description = SITE_DESCRIPTION, sideBarActiveItemID, ogType } = Astro.props;
 ---
@@ -14,7 +13,6 @@ const { image, title = SITE_TITLE, description = SITE_DESCRIPTION, sideBarActive
 <html lang="en">
   <head>
     <BaseHead title={title} description={description} image={image} ogType={ogType} />
-    {TRANSITION_API && <ClientRouter />}
   </head>
   <body>
     <!-- A plain grid, no drawer: the sidebar is sticky on wide screens and

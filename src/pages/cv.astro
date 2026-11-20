@@ -121,7 +121,7 @@ const githubShown = GITHUB_URL.replace(/^https?:\/\//, "");
         <h1 class="i-h1">Oleksandr Liakhov</h1>
         <p class="cv-role">Senior Platform / DevOps Engineer</p>
         <ul class="cv-contacts">
-          <li><a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a></li>
+          <li><a href={`mailto:${CONTACT_EMAIL}`} data-goatcounter-click="email-cv-contacts" data-goatcounter-title="Email: CV contacts">{CONTACT_EMAIL}</a></li>
           <li><a href={LINKEDIN_URL}>{linkedinShown}</a></li>
           <li><a href={GITHUB_URL}>{githubShown}</a></li>
           <li>Ho Chi Minh City, UTC+7</li>
@@ -129,8 +129,8 @@ const githubShown = GITHUB_URL.replace(/^https?:\/\//, "");
         </ul>
       </div>
       <div class="flex flex-wrap gap-3 no-print">
-        <a href={CV_PDF} class="i-btn i-btn-primary" download>Download PDF</a>
-        <a href={`mailto:${CONTACT_EMAIL}`} class="i-btn i-btn-secondary">Email me</a>
+        <a href={CV_PDF} class="i-btn i-btn-primary" download data-goatcounter-click="cv-pdf" data-goatcounter-title="CV PDF downloaded">Download PDF</a>
+        <a href={`mailto:${CONTACT_EMAIL}`} class="i-btn i-btn-secondary" data-goatcounter-click="email-cv-button" data-goatcounter-title="Email: CV page button">Email me</a>
       </div>
     </header>
 

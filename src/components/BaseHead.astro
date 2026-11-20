@@ -3,7 +3,7 @@
 // all pages through the use of the <BaseHead /> component.
 import '../styles/global.css';
 import { Font } from 'astro:assets';
-import { SITE_TITLE, CONTACT_EMAIL, LINKEDIN_URL, GITHUB_URL } from '../config';
+import { SITE_TITLE, CONTACT_EMAIL, LINKEDIN_URL, GITHUB_URL, GOATCOUNTER_ENDPOINT } from '../config';
 
 export interface Props {
 	title: string;
@@ -64,3 +64,9 @@ const person = {
 <meta property="twitter:image" content={new URL(image, Astro.url)} />
 
 <script type="application/ld+json" set:html={JSON.stringify(person)} />
+
+<!-- Visit statistics: GoatCounter. One request per page view. count.js skips
+     localhost and private networks, so `pnpm dev` and previews aren't counted.
+     Links marked data-goatcounter-click are counted as events (CV download,
+     email, LinkedIn) — see the Events list in the dashboard. -->
+<script is:inline data-goatcounter={GOATCOUNTER_ENDPOINT} async src="https://gc.zgo.at/count.js"></script>

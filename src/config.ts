@@ -4,7 +4,6 @@
 export const SITE_TITLE = 'Oleksandr Liakhov';
 export const SITE_DESCRIPTION = 'DevOps and Platform Engineer focused on reliable infrastructure, cloud platforms, automation, and developer experience.';
 export const GENERATE_SLUG_FROM_TITLE = true
-export const TRANSITION_API = true
 
 // Contact details live here so every "Get in touch" button points at the same
 // real address. Three of them used to say hello@example.com.
@@ -21,3 +20,6 @@ export const NAV = [
   { id: 'blog', href: '/blog/', label: 'Blog' },
   { id: 'cv', href: '/cv', label: 'CV' },
 ] as const;
+
+// Visit statistics: https://eleutherius.goatcounter.com (dashboard).
+export const GOATCOUNTER_ENDPOINT = 'https://eleutherius.goatcounter.com/count';
